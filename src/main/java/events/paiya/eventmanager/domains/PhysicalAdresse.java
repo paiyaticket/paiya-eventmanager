@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class PhysicalAdresse extends Adresse{
     private String adresse;
+    private String town;
     private String postalCode;
     private String country;
     private String state;

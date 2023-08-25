@@ -1,11 +1,8 @@
-package events.paiya.eventmanager.domains;
+package events.paiya.eventmanager.resources;
 
+import events.paiya.eventmanager.domains.Adresse;
+import events.paiya.eventmanager.domains.EventOrganizer;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,14 +10,12 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.TimeZone;
 
-@Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-public class Event{
-    @Id
+public class EventResource{
     private String id;
     private String title;
     private String eventType;
@@ -42,10 +37,7 @@ public class Event{
 
     // Audit properties
     private String createdBy;
-    @CreatedDate
     private LocalDateTime createdDate;
-    @LastModifiedDate
     private LocalDateTime lastModifiedDate;
-    @Version
     private Integer version;
 }
