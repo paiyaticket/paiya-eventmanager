@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Component
@@ -24,7 +26,7 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public List<Event> findEventsByCreatedBy(String owner) {
+    public List<Event> findEventsByOwner(String owner) {
         return eventRepository.findEventsByCreatedBy(owner);
     }
 
@@ -39,7 +41,17 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Event update(Event event) {
+    public Event update(String id, Event event) {
+        if (eventRepository.existsById(id)){
+            return eventRepository.save(event);
+        }
+        return eventRepository.insert(event);
+    }
+
+    @Override
+    public Event publish(Event event) {
+        event.setVisibility(true);
+        event.setPublicationDate(LocalDateTime.now(ZoneId.of(event.getTimeZone())));
         return eventRepository.save(event);
     }
 
@@ -60,6 +72,8 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public List<Event> findEventsByTown(String townName) {
-        return eventRepository.findEventsByTown(townName);
+        String townNameRegex = "/.*"+townName+".*/";
+        return eventRepository.findEventsByTown(townNameRegex);
     }
+
 }

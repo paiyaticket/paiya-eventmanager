@@ -9,13 +9,14 @@ import java.util.List;
 
 public interface EventService {
     Event create(Event event);
-    List<Event> findEventsByCreatedBy(String owner);
+    List<Event> findEventsByOwner(String owner);
     Page<Event> findByVisibilityIsTrue(Pageable pageable);
     List<Event> findAllByVisibilityIsTrue();
-    Event update(Event event);
+    Event update(String id, Event event);
     void deleteById(String eventId);
 
     List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2);
     List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title);
     List<Event> findEventsByTown(String townName);
+    Event publish(Event event);
 }

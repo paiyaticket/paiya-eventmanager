@@ -36,7 +36,7 @@ public class Event{
     private LocalDate endingDate;
     private LocalTime startingHour;
     private LocalTime endingHour;
-    private TimeZone timeZone;
+    private String timeZone;
     private Adresse adresse;
     private EventOrganizer eventOrganizer;
 

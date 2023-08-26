@@ -17,6 +17,6 @@ public interface EventRepository extends MongoRepository<Event, String> {
     Page<Event> findByVisibilityIsTrue(Pageable pageable);
     List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2);
     List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title);
-    @Query("{'adresse.town': ?0, 'visibility' :  true}")
+    @Query("{'adresse.town': {$regex : ?0}, 'visibility' :  true}")
     List<Event> findEventsByTown(String townName);
 }
