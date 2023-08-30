@@ -35,7 +35,7 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
-    @GetMapping("where")
+    @GetMapping("owned-by")
     public ResponseEntity<List<EventResource>> findEventsByOwner(@RequestParam(name = "ownerId") String ownerId){
         List<Event> events = eventService.findEventsByOwner(ownerId);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
@@ -84,10 +84,9 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
-    @PutMapping("publish")
-    public ResponseEntity<EventResource> publish(@RequestBody EventResource eventResource){
-        Event event = eventMapper.toEntity(eventResource);
-        event = eventService.publish(event);
+    @PutMapping("publish/{id}")
+    public ResponseEntity<EventResource> publish(@PathVariable(name = "id") String eventId){
+        Event event = eventService.publish(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PhysicalAdresse extends Adresse{
-    private String adresse;
+    private String location;
     private String town;
     private String postalCode;
     private String country;

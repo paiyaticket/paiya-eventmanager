@@ -8,8 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Component
 public class EventServiceImpl implements EventService{
@@ -26,7 +27,7 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public List<Event> findEventsByOwner(String owner) {
+    public List<Event>  findEventsByOwner(String owner) {
         return eventRepository.findEventsByCreatedBy(owner);
     }
 
@@ -49,10 +50,17 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Event publish(Event event) {
-        event.setVisibility(true);
-        event.setPublicationDate(LocalDateTime.now(ZoneId.of(event.getTimeZone())));
-        return eventRepository.save(event);
+    public Event publish(String eventId) {
+        Optional<Event> eventOpt = eventRepository.findById(eventId);
+
+        if (eventOpt.isPresent()){
+            Event event = eventOpt.get();
+            event.setVisibility(true);
+            event.setPublicationDate(LocalDateTime.now());
+            return eventRepository.save(event);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override

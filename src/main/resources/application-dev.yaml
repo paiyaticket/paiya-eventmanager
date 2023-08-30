@@ -1,1 +1,14 @@
+server:
+  port: 8009
+  servlet:
+    context-path: /paiya-eventmanager/api/
 
+# Database
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: paiya_eventmanager
+      username: paiya
+      password: paiya

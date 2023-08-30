@@ -18,5 +18,5 @@ public interface EventService {
     List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2);
     List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title);
     List<Event> findEventsByTown(String townName);
-    Event publish(Event event);
+    Event publish(String eventId);
 }
