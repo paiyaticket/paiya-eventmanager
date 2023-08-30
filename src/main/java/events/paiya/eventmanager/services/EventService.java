@@ -12,7 +12,7 @@ public interface EventService {
     List<Event> findEventsByOwner(String owner);
     Page<Event> findByVisibilityIsTrue(Pageable pageable);
     List<Event> findAllByVisibilityIsTrue();
-    Event update(String id, Event event);
+    Event update(String eventId, Event event);
     void deleteById(String eventId);
 
     List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2);

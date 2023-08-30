@@ -35,6 +35,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	implementation 'org.apache.commons:commons-lang3:3.13.0'
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 

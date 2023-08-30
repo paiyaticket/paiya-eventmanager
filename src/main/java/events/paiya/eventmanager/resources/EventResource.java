@@ -1,7 +1,9 @@
 package events.paiya.eventmanager.resources;
 
-import events.paiya.eventmanager.domains.Adresse;
 import events.paiya.eventmanager.domains.EventOrganizer;
+import events.paiya.eventmanager.domains.OnlineAdresse;
+import events.paiya.eventmanager.domains.PhysicalAdresse;
+import events.paiya.eventmanager.enumeration.Langages;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -36,13 +38,14 @@ public class EventResource{
     private String description;
     private LocalDateTime publicationDate;
     private Boolean visibility;
-    private String eventPageLanguage;
+    private Langages eventPageLanguage;
     private LocalDate startingDate;
     private LocalDate endingDate;
     private LocalTime startingHour;
     private LocalTime endingHour;
     private String timeZone;
-    private Adresse adresse;
+    private PhysicalAdresse physicalAdresse;
+    private OnlineAdresse onlineAdresse;
     private EventOrganizer eventOrganizer;
 
     // Audit properties
