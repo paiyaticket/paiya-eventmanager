@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_PWD = credentials('DOCKER_HUB_PWD')
+    }
+
+    stages{
+        stage('build'){
+            steps{
+                git branch: 'pipeline-de-dev', url: 'https://github.com/koffiange62/paiya-eventmanager.git'
+                sh './gradlew build -x test'
+            }
+        }
+
+        stage('unit test'){
+            steps{
+                sh './gradlew test'
+            }
+        }
+        stage('Statics Analysis'){
+            options {
+                timeout(time: 1, unit: "MINUTES")
+            }
+            steps{
+                script{
+                    withSonarQubeEnv() {
+                        sh './gradlew jacocoTestReport sonar'
+                    }
+                }
+            }
+        }
+
+        stage('Build docker image and push'){
+            steps{
+                sh 'docker login -u koffiange -p ${DOCKER_HUB_PWD}'
+                sh "docker build -f cicd/Dockerfile -t koffiange/paiya-eventmanager:0.0.${env.BUILD_ID} ."
+                sh "docker push koffiange/paiya-eventmanager:0.0.${env.BUILD_ID}"
+            }
+        }
+
+        stage('Deploy'){
+            options {
+                timeout(time: 1, unit: "MINUTES")
+            }
+            steps{
+                sh "docker rm -fv container /paiya-eventemanager"
+                sh "docker run --detach --name paiya-eventemanager --network bridge -p 8010:8010 koffiange/paiya-eventmanager:0.0.${env.BUILD_ID}"
+            }
+        }
+    }
+}
