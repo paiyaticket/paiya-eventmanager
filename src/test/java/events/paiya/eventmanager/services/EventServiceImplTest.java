@@ -61,18 +61,20 @@ class EventServiceImplTest {
 
     @Test
     void givenId_whenExist_thenSave() {
-        Mockito.when(eventRepository.existsById(Mockito.anyString())).thenReturn(true);
+        String eventId = UUID.randomUUID().toString();
+        Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.of(new Event()));
         Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(new Event());
-        Event event = eventService.update("", new Event());
+        Event event = eventService.update(eventId, new Event());
         Assert.notNull(event, () -> "Must not return null");
         Mockito.verify(eventRepository, Mockito.times(1)).save(new Event());
     }
 
     @Test
     void givenId_whenNotExist_thenInsert() {
-        Mockito.when(eventRepository.existsById(Mockito.anyString())).thenReturn(false);
+        String eventId = UUID.randomUUID().toString();
+        Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
         Mockito.when(eventRepository.insert(Mockito.any(Event.class))).thenReturn(new Event());
-        Event event = eventService.update("", new Event());
+        Event event = eventService.update(eventId, new Event());
         Assert.notNull(event, () -> "Must not return null");
         Mockito.verify(eventRepository, Mockito.times(1)).insert(new Event());
     }
