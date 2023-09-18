@@ -3,12 +3,12 @@ pipeline {
 
     environment {
         DOCKER_HUB_PWD = credentials('DOCKER_HUB_PWD')
+        DOCKER_HUB_USER = credentials('DOCKER_HUB_USER')
     }
 
     stages{
         stage('build'){
             steps{
-                // git branch: 'pipeline-de-dev', url: 'https://github.com/koffiange62/paiya-eventmanager.git'
                 sh './gradlew build -x test'
             }
         }
@@ -33,7 +33,7 @@ pipeline {
 
         stage('Build docker image and push'){
             steps{
-                sh 'docker login -u koffiange -p ${DOCKER_HUB_PWD}'
+                sh 'docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PWD}'
                 sh "docker build -f cicd/Dockerfile -t koffiange/paiya-eventmanager:0.0.${env.BUILD_ID} ."
                 sh "docker push koffiange/paiya-eventmanager:0.0.${env.BUILD_ID}"
             }
