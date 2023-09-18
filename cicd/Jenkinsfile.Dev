@@ -45,7 +45,7 @@ pipeline {
             }
             steps{
                 sh "docker rm -fv container /paiya-eventemanager"
-                sh "docker run --detach --name paiya-eventemanager --network bridge -p 8010:8010 koffiange/paiya-eventmanager:0.0.${env.BUILD_ID}"
+                sh "docker run --detach --name paiya-eventemanager --network paiya-network -p 8010:8010 koffiange/paiya-eventmanager:0.0.${env.BUILD_ID}"
             }
         }
     }
