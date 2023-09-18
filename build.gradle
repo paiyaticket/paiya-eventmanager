@@ -59,12 +59,13 @@ tasks.named('test') {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "paiya-enventmanager-sonar"
-		property "sonar.projectName", "paiya-enventmanager-sonar"
+		property "sonar.projectKey", "paiya-enventmanager-dev-sonar"
+		property "sonar.projectName", "paiya-enventmanager-dev-sonar"
 		property "sonar.organization", "paiya"
 		property "sonar.host.url", "http://localhost:9000"
 		property "sonar.sources", "src/main/java/events/paiya/eventmanager/services"
 		property "sonar.tests", "src/test/"
+		property "sonar.token", "sqp_2d6853d8d599c3e347fea21e7ba8dbfae3911bcb"
 	}
 }
 
