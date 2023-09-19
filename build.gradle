@@ -10,7 +10,7 @@ group = 'events.paiya'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -59,18 +59,16 @@ tasks.named('test') {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "paiya-enventmanager-dev-sonar"
-		property "sonar.projectName", "paiya-enventmanager-dev-sonar"
+		property "sonar.projectKey", "paiya-eventmanager-dev-sonar"
+		property "sonar.projectName", "paiya-eventmanager-dev-sonar"
 		property "sonar.organization", "paiya"
 		property "sonar.host.url", "http://localhost:9000"
 		property "sonar.sources", "src/main/java/events/paiya/eventmanager/services"
 		property "sonar.tests", "src/test/"
-		property "sonar.token", "sqp_2d6853d8d599c3e347fea21e7ba8dbfae3911bcb"
 	}
 }
 
 jacocoTestReport {
-	// dependsOn test
 	reports {
 		xml.required = true
 	}
