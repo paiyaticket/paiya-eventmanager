@@ -1,6 +1,7 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
+import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.repositories.EventRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class EventServiceImplTest {
     void givenOwnerId_thenFindEventsByOwner() {
         Mockito.when(eventRepository.findEventsByCreatedBy(Mockito.anyString())).thenReturn(List.of(new Event()));
         List<Event> events = eventService.findEventsByOwner(UUID.randomUUID().toString());
-        Assert.notEmpty(events, () -> "Events array must not be empty");
+        Assertions.assertFalse(events.isEmpty());
     }
 
     @Test
@@ -48,15 +49,15 @@ class EventServiceImplTest {
         Pageable pageable = PageRequest.of(1, 1);
         Mockito.when(eventRepository.findByVisibilityIsTrue(pageable)).thenReturn(new PageImpl<>(List.of(new Event()), pageable, 1));
         Page<Event> eventPage = eventService.findByVisibilityIsTrue(pageable);
-        Assertions.assertEquals(eventPage.getNumberOfElements(), 1);
-        Assertions.assertEquals(eventPage.getContent().size(), 1);
+        Assertions.assertEquals(1, eventPage.getNumberOfElements());
+        Assertions.assertEquals(1, eventPage.getContent().size());
     }
 
     @Test
     void findAllByVisibilityIsTrue() {
         Mockito.when(eventRepository.findAllByVisibilityIsTrue()).thenReturn(List.of(new Event()));
         List<Event> events = eventService.findAllByVisibilityIsTrue();
-        Assert.notEmpty(events, () -> "Events array must not be empty");
+        Assertions.assertFalse(events.isEmpty());
     }
 
     @Test
@@ -65,7 +66,7 @@ class EventServiceImplTest {
         Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.of(new Event()));
         Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(new Event());
         Event event = eventService.update(eventId, new Event());
-        Assert.notNull(event, () -> "Must not return null");
+        Assertions.assertNotNull(event);
         Mockito.verify(eventRepository, Mockito.times(1)).save(new Event());
     }
 
@@ -98,6 +99,24 @@ class EventServiceImplTest {
         Mockito.when(eventRepository.findById(Mockito.anyString())).thenThrow(new NoSuchElementException());
 
         Assertions.assertThrowsExactly(NoSuchElementException.class, () -> eventService.publish(id));
+    }
+
+    @Test
+    void addTicketCategorie(){
+        String id = UUID.randomUUID().toString();
+        TicketCategorie ticketCategorie = TicketCategorie.builder().build();
+        Mockito.doNothing().when(eventRepository).addTicketCategorie(Mockito.anyString(), Mockito.any(TicketCategorie.class));
+        eventService.addTicketCategorie(id, ticketCategorie);
+        Mockito.verify(eventRepository).addTicketCategorie(id, ticketCategorie);
+    }
+
+    @Test
+    void removeTicketCategorie(){
+        String id = UUID.randomUUID().toString();
+        String categorieCode = id+"cat_"+UUID.randomUUID();
+        Mockito.doNothing().when(eventRepository).removeTicketCategorie(Mockito.anyString(), Mockito.anyString());
+        eventService.removeTicketCategorie(id, categorieCode);
+        Mockito.verify(eventRepository).removeTicketCategorie(id, categorieCode);
     }
 
     @Test

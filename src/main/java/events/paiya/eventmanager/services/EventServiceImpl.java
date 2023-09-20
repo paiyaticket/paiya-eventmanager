@@ -1,6 +1,7 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
+import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.repositories.EventRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,11 @@ public class EventServiceImpl implements EventService{
 
     public EventServiceImpl(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
+    }
+
+    @Override
+    public Event findByIdAndVisibilityIsTrue(String id) {
+        return eventRepository.findByIdAndVisibilityIsTrue(id).orElseThrow();
     }
 
     @Override
@@ -82,6 +88,21 @@ public class EventServiceImpl implements EventService{
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public void addTicketCategorie(String eventId, TicketCategorie ticketCategorie) {
+        eventRepository.addTicketCategorie(eventId, ticketCategorie);
+    }
+
+    @Override
+    public void removeTicketCategorie(String eventId, String categorieCode) {
+        eventRepository.removeTicketCategorie(eventId, categorieCode);
+    }
+
+    @Override
+    public void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategorie ticketCategorie) {
+        eventRepository.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
     }
 
     @Override
