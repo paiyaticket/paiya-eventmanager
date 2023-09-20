@@ -4,8 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_PWD = credentials('DOCKER_HUB_PWD')
         DOCKER_HUB_USER = credentials('DOCKER_HUB_USER')
-        SONAR_LOGIN = credentials('SONAR_LOGIN')
-        SONAR_PASSWORD = credentials('SONAR_PASSWORD')
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
     }
 
     stages{
@@ -27,7 +26,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv() {
-                        sh './gradlew jacocoTestReport sonar -Dsonar.login=${SONAR_LOGIN} -Dsonar.password=${SONAR_PASSWORD}'
+                        sh './gradlew jacocoTestReport sonar -Psonarstage=dev -Dsonar.token=${SONAR_TOKEN}'
                     }
                 }
             }

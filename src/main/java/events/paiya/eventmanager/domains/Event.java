@@ -40,6 +40,7 @@ public class Event{
     private PhysicalAdresse physicalAdresse;
     private OnlineAdresse onlineAdresse;
     private EventOrganizer eventOrganizer;
+    private List<TicketCategorie> ticketCategories;
 
     // Audit properties
     private String createdBy;

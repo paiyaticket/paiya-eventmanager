@@ -1,10 +1,12 @@
 package events.paiya.eventmanager.controllers;
 
 import events.paiya.eventmanager.domains.Event;
+import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.resources.EventResource;
 import events.paiya.eventmanager.services.EventServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/events")
@@ -87,6 +90,32 @@ public class EventController {
     @PutMapping("publish/{id}")
     public ResponseEntity<EventResource> publish(@PathVariable(name = "id") String eventId){
         Event event = eventService.publish(eventId);
+        return ResponseEntity.ok(eventMapper.toResource(event));
+    }
+
+    @PutMapping("{id}/ticket-categorie/add")
+    public ResponseEntity<EventResource> addTicketCategorie(@PathVariable(name = "id") String eventId,
+                                                            @RequestBody @NotNull TicketCategorie ticketCategorie) {
+        ticketCategorie.setCategorieCode(eventId + "cat_" + UUID.randomUUID());
+        eventService.addTicketCategorie(eventId, ticketCategorie);
+        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
+        return ResponseEntity.ok(eventMapper.toResource(event));
+    }
+
+    @PutMapping("{id}/ticket-categorie/remove/{categorieCode}")
+    public ResponseEntity<EventResource> removeTicketCategorie(@PathVariable(name = "id") String eventId,
+                                              @PathVariable(name = "categorieCode") String categorieCode) {
+        eventService.removeTicketCategorie(eventId, categorieCode);
+        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
+        return ResponseEntity.ok(eventMapper.toResource(event));
+    }
+
+    @PutMapping("{id}/ticket-categorie/update/{categorieCode}")
+    public ResponseEntity<EventResource> updateTicketCategorie(@PathVariable(name = "id") String eventId,
+                                                               @PathVariable(name = "categorieCode") String categorieCode,
+                                                               @RequestBody @NotNull TicketCategorie ticketCategorie) {
+        eventService.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
+        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
