@@ -8,17 +8,24 @@ pipeline {
     }
 
     stages{
-        stage('build'){
+        stage('Build'){
             steps{
                 sh './gradlew build -x test'
             }
         }
 
-        stage('unit test'){
+        stage('Unit test'){
             steps{
                 sh './gradlew test'
             }
         }
+
+        stage('Integration test'){
+            steps{
+                sh './gradlew integrationTest'
+            }
+        }
+
         stage('Statics Analysis'){
             options {
                 timeout(time: 2, unit: "MINUTES")

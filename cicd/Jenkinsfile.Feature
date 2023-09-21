@@ -6,14 +6,14 @@ pipeline {
     }
 
     stages{
-        stage('build'){
+        stage('Build'){
             steps{
-                git branch: 'ticket-categorie', url: 'https://github.com/koffiange62/paiya-eventmanager.git'
+                git branch: 'integration-test', url: 'https://github.com/koffiange62/paiya-eventmanager.git'
                 sh './gradlew build -x test'
             }
         }
 
-        stage('unit test'){
+        stage('Unit test'){
             steps{
                 sh './gradlew test'
             }

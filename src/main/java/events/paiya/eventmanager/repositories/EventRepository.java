@@ -21,18 +21,21 @@ public interface EventRepository extends MongoRepository<Event, String> {
     Page<Event> findByVisibilityIsTrue(Pageable pageable);
     List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2);
     List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title);
-    @Query("{'adresse.town': {$regex : ?0}, 'visibility' :  true}")
-    List<Event> findEventsByTown(String townName);
+
+    //@Query("{'physicalAdresse.town': {$regex : ?0, $options : 'i'}, 'visibility' :  true}")
+    // List<Event> findEventsByTown(String townNameRegex);
+    List<Event> findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue(String town);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")
     void addTicketCategorie(String eventId, TicketCategorie ticketCategorie);
 
-    @Query("{'_id': ?0}")
-    @Update("{'$pull' : {'ticketCategories.categorieCode' : ?1} }")
-    void removeTicketCategorie(String eventId, String categorieCode);
-
     @Query("{'_id': ?0, 'ticketCategories.categorieCode': ?1}")
     @Update("{'$set' : {'ticketCategories.$' : ?2} }")
     void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategorie ticketCategorie);
+
+    @Query("{'_id': ?0}")
+    @Update("{'$pull' : {'ticketCategories' : {categorieCode : ?1}} }")
+    void removeTicketCategorie(String eventId, String categorieCode);
+
 }
