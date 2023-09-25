@@ -3,6 +3,7 @@ package events.paiya.eventmanager.services;
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.repositories.EventRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class EventServiceImpl implements EventService{
 
     private final EventRepository eventRepository;
@@ -106,6 +108,11 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
+    public void deleteAll() {
+        eventRepository.deleteAll();
+    }
+
+    @Override
     public void deleteById(String eventId) {
         eventRepository.deleteById(eventId);
     }
@@ -122,8 +129,9 @@ public class EventServiceImpl implements EventService{
 
     @Override
     public List<Event> findEventsByTown(String townName) {
-        String townNameRegex = "/.*"+townName+".*/";
-        return eventRepository.findEventsByTown(townNameRegex);
+        return eventRepository.findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue(townName);
     }
+
+
 
 }

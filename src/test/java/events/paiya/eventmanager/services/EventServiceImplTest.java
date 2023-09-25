@@ -152,11 +152,11 @@ class EventServiceImplTest {
     @Test
     void findEventsByTown() {
         String town = "test";
-        Mockito.when(eventRepository.findEventsByTown(Mockito.anyString())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue(Mockito.anyString())).thenReturn(List.of(new Event()));
 
         List<Event> events = eventService.findEventsByTown(town);
 
-        Mockito.verify(eventRepository).findEventsByTown("/.*test.*/");
+        Mockito.verify(eventRepository).findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue("test");
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 }

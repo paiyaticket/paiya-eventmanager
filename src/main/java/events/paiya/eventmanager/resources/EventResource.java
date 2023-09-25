@@ -3,6 +3,7 @@ package events.paiya.eventmanager.resources;
 import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.OnlineAdresse;
 import events.paiya.eventmanager.domains.PhysicalAdresse;
+import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.enumeration.Langages;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -37,7 +38,8 @@ public class EventResource{
     @Size(max = 3000, message = "Must contain no more than 100 caracters")
     private String description;
     private LocalDateTime publicationDate;
-    private Boolean visibility;
+    @Builder.Default
+    private Boolean visibility = false;
     private Langages eventPageLanguage;
     private LocalDate startingDate;
     private LocalDate endingDate;
@@ -47,6 +49,8 @@ public class EventResource{
     private PhysicalAdresse physicalAdresse;
     private OnlineAdresse onlineAdresse;
     private EventOrganizer eventOrganizer;
+    @Builder.Default
+    private List<TicketCategorie> ticketCategories = new ArrayList<>();
 
     // Audit properties
     private String createdBy;

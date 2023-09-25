@@ -25,4 +25,6 @@ public interface EventService {
     void addTicketCategorie(String eventId, TicketCategorie ticketCategorie);
     void removeTicketCategorie(String eventId, String categorieCode);
     void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategorie ticketCategorie);
+
+    void deleteAll();
 }

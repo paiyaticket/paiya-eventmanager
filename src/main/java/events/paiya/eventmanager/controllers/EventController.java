@@ -5,6 +5,7 @@ import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.resources.EventResource;
 import events.paiya.eventmanager.services.EventServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -32,10 +35,11 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventResource> create(@RequestBody @Valid EventResource resource){
+    public ResponseEntity<EventResource> create(@RequestBody @Valid EventResource resource, HttpServletRequest request) throws URISyntaxException {
         Event event = eventMapper.toEntity(resource);
         event = eventService.create(event);
-        return ResponseEntity.ok(eventMapper.toResource(event));
+        URI uri = new URI(request.getContextPath()+"/"+request.getRequestURI()+"/"+event.getId());
+        return ResponseEntity.created(uri).body(eventMapper.toResource(event));
     }
 
     @GetMapping("owned-by")
@@ -65,7 +69,7 @@ public class EventController {
     }
 
     @GetMapping("paginated")
-    public ResponseEntity<List<EventResource>> findByVisibilityIsTrue(@RequestParam int page, @RequestParam int size){
+    public ResponseEntity<List<EventResource>> findByVisibilityIsTrue(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size){
         Pageable pageable = PageRequest.of(page, size);
         Page<Event> eventPage = eventService.findByVisibilityIsTrue(pageable);
         List<EventResource> eventResourceList = eventMapper.toResourceList(eventPage.stream().toList());
@@ -96,16 +100,8 @@ public class EventController {
     @PutMapping("{id}/ticket-categorie/add")
     public ResponseEntity<EventResource> addTicketCategorie(@PathVariable(name = "id") String eventId,
                                                             @RequestBody @NotNull TicketCategorie ticketCategorie) {
-        ticketCategorie.setCategorieCode(eventId + "cat_" + UUID.randomUUID());
+        if (ticketCategorie.getCategorieCode() == null) ticketCategorie.setCategorieCode(eventId + ".CAT." + UUID.randomUUID());
         eventService.addTicketCategorie(eventId, ticketCategorie);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-
-    @PutMapping("{id}/ticket-categorie/remove/{categorieCode}")
-    public ResponseEntity<EventResource> removeTicketCategorie(@PathVariable(name = "id") String eventId,
-                                              @PathVariable(name = "categorieCode") String categorieCode) {
-        eventService.removeTicketCategorie(eventId, categorieCode);
         Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
@@ -119,10 +115,18 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
+    @PutMapping("{id}/ticket-categorie/remove/{categorieCode}")
+    public ResponseEntity<EventResource> removeTicketCategorie(@PathVariable(name = "id") String eventId,
+                                                               @PathVariable(name = "categorieCode") String categorieCode) {
+        eventService.removeTicketCategorie(eventId, categorieCode);
+        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
+        return ResponseEntity.ok(eventMapper.toResource(event));
+    }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<?> delete(@PathVariable String id){
+    public ResponseEntity<Void> delete(@PathVariable String id){
         this.eventService.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 

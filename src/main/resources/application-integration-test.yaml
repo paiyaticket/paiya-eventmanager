@@ -3,11 +3,19 @@ server:
   servlet:
     context-path: /paiya-eventmanager/api
 
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              org.springframework.data.mongodb.core.MongoTemplate: DEBUG
 # Database
 spring:
   data:
     mongodb:
-      host: mongodb
+      host: localhost
       port: 27017
       database: paiya_eventmanager
       username: paiya
