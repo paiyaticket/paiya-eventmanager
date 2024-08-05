@@ -51,6 +51,7 @@ public class EventResource{
     private EventOrganizer eventOrganizer;
     @Builder.Default
     private List<TicketCategorie> ticketCategories = new ArrayList<>();
+    private String financialAccountId;
 
     // Audit properties
     private String createdBy;
