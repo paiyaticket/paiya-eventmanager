@@ -3,7 +3,7 @@ package events.paiya.eventmanager.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.EventOrganizer;
-import events.paiya.eventmanager.domains.PhysicalAdresse;
+import events.paiya.eventmanager.domains.PhysicalAddress;
 import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.services.EventServiceImpl;
@@ -239,13 +239,13 @@ public class EventControllerIntegrationTest {
                 "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73");
         event2.setStartingDate(LocalDate.of(2023, 7, 1));
         event2.setVisibility(true);
-        event2.setPhysicalAdresse(PhysicalAdresse.builder().country("CIV").town("Daloa").build());
+        event2.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Daloa").build());
 
         Event event3 = buildEvent(EVENT3_ID,
                 "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73");
         event3.setStartingDate(LocalDate.of(2023, 8, 1));
         event3.setVisibility(true);
-        event3.setPhysicalAdresse(PhysicalAdresse.builder().country("CIV").town("Abidjan").build());
+        event3.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
 
         eventService.create(event2);
         eventService.create(event3);

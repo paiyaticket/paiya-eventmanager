@@ -37,8 +37,8 @@ public class Event{
     private LocalTime startingHour;
     private LocalTime endingHour;
     private String timeZone;
-    private PhysicalAdresse physicalAdresse;
-    private OnlineAdresse onlineAdresse;
+    private PhysicalAddress physicalAdresse;
+    private OnlineAddress onlineAdresse;
     private EventOrganizer eventOrganizer;
     private List<TicketCategorie> ticketCategories;
     private String financialAccountId;

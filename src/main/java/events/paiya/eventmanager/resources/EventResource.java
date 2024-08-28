@@ -1,8 +1,8 @@
 package events.paiya.eventmanager.resources;
 
 import events.paiya.eventmanager.domains.EventOrganizer;
-import events.paiya.eventmanager.domains.OnlineAdresse;
-import events.paiya.eventmanager.domains.PhysicalAdresse;
+import events.paiya.eventmanager.domains.OnlineAddress;
+import events.paiya.eventmanager.domains.PhysicalAddress;
 import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.enumeration.Langages;
 import jakarta.validation.constraints.NotBlank;
@@ -46,8 +46,8 @@ public class EventResource{
     private LocalTime startingHour;
     private LocalTime endingHour;
     private String timeZone;
-    private PhysicalAdresse physicalAdresse;
-    private OnlineAdresse onlineAdresse;
+    private PhysicalAddress physicalAdresse;
+    private OnlineAddress onlineAdresse;
     private EventOrganizer eventOrganizer;
     @Builder.Default
     private List<TicketCategorie> ticketCategories = new ArrayList<>();

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OnlineAdresse extends Adresse{
+public class OnlineAddress extends Adresse{
     private OnlinePlatform onlinePlatform;
     private String link;
 }
