@@ -1,13 +1,11 @@
 package events.paiya.eventmanager.controllers;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.resources.EventResource;
-import events.paiya.eventmanager.services.EventServiceImpl;
+import events.paiya.eventmanager.services.EventService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,16 +18,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/events")
-@Slf4j
 public class EventController {
-    private final EventServiceImpl eventService;
+    private final EventService eventService;
     private final EventMapper eventMapper;
 
-    public EventController(EventServiceImpl eventService, EventMapper eventMapper) {
+    public EventController(EventService eventService, EventMapper eventMapper) {
         this.eventService = eventService;
         this.eventMapper = eventMapper;
     }
@@ -97,6 +93,7 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
+    /* 
     @PutMapping("{id}/ticket-categorie/add")
     public ResponseEntity<EventResource> addTicketCategorie(@PathVariable(name = "id") String eventId,
                                                             @RequestBody @NotNull Ticket ticketCategorie) {
@@ -122,6 +119,7 @@ public class EventController {
         Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
+    */
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable String id){
