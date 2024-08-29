@@ -8,14 +8,18 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-public class TicketCategorie {
-    private String categorieCode;
-    private String categorieName;
+public class TicketCategory {
+    private String id;
+    private String code;
+    private String name;
     private Integer quantity;
     private Double price;
     private Boolean isTransactionFeesSupported;
@@ -28,5 +32,5 @@ public class TicketCategorie {
     private Integer minimumTicketQuantityPerOrder;
     private Integer maximumTicketQuantityPerOrder;
     private String description;
-    private String string;
+    private String eventId;
 }

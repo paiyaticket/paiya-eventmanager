@@ -1,7 +1,7 @@
 package events.paiya.eventmanager.controllers;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategorie;
+import events.paiya.eventmanager.domains.TicketCategory;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.resources.EventResource;
 import events.paiya.eventmanager.services.EventServiceImpl;
@@ -99,8 +99,8 @@ public class EventController {
 
     @PutMapping("{id}/ticket-categorie/add")
     public ResponseEntity<EventResource> addTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                            @RequestBody @NotNull TicketCategorie ticketCategorie) {
-        if (ticketCategorie.getCategorieCode() == null) ticketCategorie.setCategorieCode(eventId + ".CAT." + UUID.randomUUID());
+                                                            @RequestBody @NotNull TicketCategory ticketCategorie) {
+        if (ticketCategorie.getCode() == null) ticketCategorie.setCode(eventId + ".CAT." + UUID.randomUUID());
         eventService.addTicketCategorie(eventId, ticketCategorie);
         Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
@@ -109,7 +109,7 @@ public class EventController {
     @PutMapping("{id}/ticket-categorie/update/{categorieCode}")
     public ResponseEntity<EventResource> updateTicketCategorie(@PathVariable(name = "id") String eventId,
                                                                @PathVariable(name = "categorieCode") String categorieCode,
-                                                               @RequestBody @NotNull TicketCategorie ticketCategorie) {
+                                                               @RequestBody @NotNull TicketCategory ticketCategorie) {
         eventService.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
         Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));

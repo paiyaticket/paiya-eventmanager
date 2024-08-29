@@ -1,7 +1,7 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategorie;
+import events.paiya.eventmanager.domains.TicketCategory;
 import events.paiya.eventmanager.repositories.EventRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -104,8 +104,8 @@ class EventServiceImplTest {
     @Test
     void addTicketCategorie(){
         String id = UUID.randomUUID().toString();
-        TicketCategorie ticketCategorie = TicketCategorie.builder().build();
-        Mockito.doNothing().when(eventRepository).addTicketCategorie(Mockito.anyString(), Mockito.any(TicketCategorie.class));
+        TicketCategory ticketCategorie = TicketCategory.builder().build();
+        Mockito.doNothing().when(eventRepository).addTicketCategorie(Mockito.anyString(), Mockito.any(TicketCategory.class));
         eventService.addTicketCategorie(id, ticketCategorie);
         Mockito.verify(eventRepository).addTicketCategorie(id, ticketCategorie);
     }

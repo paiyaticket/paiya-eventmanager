@@ -1,7 +1,7 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategorie;
+import events.paiya.eventmanager.domains.TicketCategory;
 import events.paiya.eventmanager.repositories.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -93,7 +93,7 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void addTicketCategorie(String eventId, TicketCategorie ticketCategorie) {
+    public void addTicketCategorie(String eventId, TicketCategory ticketCategorie) {
         eventRepository.addTicketCategorie(eventId, ticketCategorie);
     }
 
@@ -103,7 +103,7 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategorie ticketCategorie) {
+    public void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategory ticketCategorie) {
         eventRepository.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
     }
 
