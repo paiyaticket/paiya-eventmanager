@@ -40,7 +40,7 @@ public class Event{
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;
     private EventOrganizer eventOrganizer;
-    private List<TicketCategory> ticketCategories;
+    private List<Ticket> ticketCategories;
     private String financialAccountId;
 
     // Audit properties

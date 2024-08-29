@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Builder
 @ToString
-public class TicketCategory {
+public class Ticket {
     private String id;
     private String code;
     private String name;

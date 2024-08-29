@@ -1,7 +1,7 @@
 package events.paiya.eventmanager.repositories;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategory;
+import events.paiya.eventmanager.domains.Ticket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -28,11 +28,11 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")
-    void addTicketCategorie(String eventId, TicketCategory ticketCategorie);
+    void addTicketCategorie(String eventId, Ticket ticketCategorie);
 
     @Query("{'_id': ?0, 'ticketCategories.categorieCode': ?1}")
     @Update("{'$set' : {'ticketCategories.$' : ?2} }")
-    void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategory ticketCategorie);
+    void updateTicketCategorieBy(String eventId, String categorieCode, Ticket ticketCategorie);
 
     @Query("{'_id': ?0}")
     @Update("{'$pull' : {'ticketCategories' : {categorieCode : ?1}} }")

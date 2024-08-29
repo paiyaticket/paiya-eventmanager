@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.PhysicalAddress;
-import events.paiya.eventmanager.domains.TicketCategory;
+import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.services.EventServiceImpl;
 import org.junit.jupiter.api.*;
@@ -167,7 +167,7 @@ public class EventControllerIntegrationTest {
     @Test
     @Order(9)
     void addTicketCategorie() throws Exception {
-        TicketCategory ticketCategorie = TicketCategory.builder()
+        Ticket ticketCategorie = Ticket.builder()
                 .categorieCode(TICKET_CATEGORIE_CODE)
                 .categorieName("stater")
                 .description("Low standing").price(10000d).quantity(100)
@@ -185,7 +185,7 @@ public class EventControllerIntegrationTest {
     @Test
     @Order(10)
     void updateTicketCategorie() throws Exception {
-        TicketCategory updateTicketCategorie = TicketCategory.builder()
+        Ticket updateTicketCategorie = Ticket.builder()
                 .categorieCode(TICKET_CATEGORIE_CODE)
                 .categorieName("stater updated")
                 .description("Low standing").price(10500d).quantity(90)

@@ -1,7 +1,7 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategory;
+import events.paiya.eventmanager.domains.Ticket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -22,9 +22,9 @@ public interface EventService {
     List<Event> findEventsByTown(String townName);
     Event publish(String eventId);
 
-    void addTicketCategorie(String eventId, TicketCategory ticketCategorie);
+    void addTicketCategorie(String eventId, Ticket ticketCategorie);
     void removeTicketCategorie(String eventId, String categorieCode);
-    void updateTicketCategorieBy(String eventId, String categorieCode, TicketCategory ticketCategorie);
+    void updateTicketCategorieBy(String eventId, String categorieCode, Ticket ticketCategorie);
 
     void deleteAll();
 }
