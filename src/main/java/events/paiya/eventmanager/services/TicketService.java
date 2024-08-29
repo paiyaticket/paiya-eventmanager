@@ -2,8 +2,12 @@ package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.repositories.TicketRepository;
-import java.util.List;
+import java.util.*;
 
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class TicketService {
 
     private final TicketRepository ticketRepository;

@@ -4,9 +4,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
-public class BaseEntity {
+@Data
+public abstract class BaseEntity {
     private String createdBy;
     @CreatedDate
     private LocalDateTime createdDate;

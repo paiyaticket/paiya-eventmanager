@@ -8,16 +8,18 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @Data
-@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
-public class Ticket extends BaseEntity{
+public class Ticket{
     private String id;
     private String code;
     private String name;
@@ -34,4 +36,14 @@ public class Ticket extends BaseEntity{
     private Integer maximumTicketQuantityPerOrder;
     private String description;
     private String eventId;
+
+
+    // Audit properties
+    private String createdBy;
+    @CreatedDate
+    private LocalDateTime createdDate;
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
+    @Version
+    private Integer version;
 }
