@@ -2,8 +2,12 @@ package events.paiya.eventmanager.mappers;
 
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.resources.EventResource;
+
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
@@ -17,4 +21,7 @@ public interface EventMapper {
 
     List<Event> toEntityList(List<EventResource> resource);
     List<EventResource> toResourceList(List<Event> event);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void update(EventResource resource, @MappingTarget Event entity);
 }

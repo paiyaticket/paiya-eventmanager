@@ -84,8 +84,8 @@ public class EventControllerIntegrationTest {
     @Test
     @Order(3)
     void findEventsByStartingDateBetweenAndVisibilityIsTrue()  throws Exception {
-        String minDate = "2023-06-30";
-        String maxDate = "2023-08-30";
+        String minDate = "2023-06-30T04:42:37.099456";
+        String maxDate = "2023-08-30T04:42:37.099456";
         this.buildAndSaveTwoEvents();
         mockMvc.perform(get("/v1/events/date-between")
                         .param("minDate", minDate)
@@ -144,7 +144,7 @@ public class EventControllerIntegrationTest {
 
         Event oldEvent = eventService.findByIdAndVisibilityIsTrue(EVENT1_ID);
 
-        mockMvc.perform(put("/v1/events/"+EVENT1_ID)
+        mockMvc.perform(patch("/v1/events/"+EVENT1_ID)
                         .content(objectMapper.writeValueAsBytes(eventMapper.toResource(event)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -154,7 +154,7 @@ public class EventControllerIntegrationTest {
     @Test
     @Order(8)
     void publish() throws Exception {
-        mockMvc.perform(put("/v1/events/publish/"+EVENT1_ID)
+        mockMvc.perform(patch("/v1/events/publish/"+EVENT1_ID)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.publicationDate").exists())

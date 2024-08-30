@@ -79,14 +79,15 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResourceList(eventService.findAllByVisibilityIsTrue()));
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<EventResource> update(@PathVariable String id, @RequestBody EventResource eventResource){
-        Event event = eventMapper.toEntity(eventResource);
-        event = eventService.update(id, event);
+        Event event = eventService.findById(id);
+        eventMapper.update(eventResource, event);
+        event = eventService.update(event);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
-    @PutMapping("publish/{id}")
+    @PatchMapping("publish/{id}")
     public ResponseEntity<EventResource> publish(@PathVariable(name = "id") String eventId){
         Event event = eventService.publish(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));

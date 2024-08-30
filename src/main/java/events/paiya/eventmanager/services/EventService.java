@@ -22,7 +22,10 @@ public class EventService{
         this.eventRepository = eventRepository;
     }
 
-     
+    public Event findById(String id) {
+        return eventRepository.findById(id).orElseThrow();
+    }
+
     public Event findByIdAndVisibilityIsTrue(String id) {
         return eventRepository.findByIdAndVisibilityIsTrue(id).orElseThrow();
     }
@@ -48,7 +51,7 @@ public class EventService{
     }
 
      
-    public Event update(String eventId, Event event) {
+    public Event update(Event event) {
         // Optional<Event> eventOpt = eventRepository.findById(eventId);
         return eventRepository.save(event);
         /* 

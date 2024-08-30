@@ -36,8 +36,8 @@ public class Event{
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;
     private EventOrganizer eventOrganizer;
-    private List<Ticket> ticketCategories;
-    private String financialAccountId;
+    private List<Ticket> tickets;
+    private List<CashAccount> cashAccounts;
 
     // Audit properties
     private String createdBy;

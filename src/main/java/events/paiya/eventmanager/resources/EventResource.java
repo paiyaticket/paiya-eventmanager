@@ -1,5 +1,6 @@
 package events.paiya.eventmanager.resources;
 
+import events.paiya.eventmanager.domains.CashAccount;
 import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.OnlineAddress;
 import events.paiya.eventmanager.domains.PhysicalAddress;
@@ -46,8 +47,9 @@ public class EventResource{
     private OnlineAddress onlineAdresse;
     private EventOrganizer eventOrganizer;
     @Builder.Default
-    private List<Ticket> ticketCategories = new ArrayList<>();
-    private String financialAccountId;
+    private List<Ticket> tickets = new ArrayList<>();
+    @Builder.Default
+    private List<CashAccount> cashAccounts = new ArrayList<>();
 
     // Audit properties
     private String createdBy;
