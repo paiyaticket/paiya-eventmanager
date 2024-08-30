@@ -1,27 +1,20 @@
 package events.paiya.eventmanager.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.mappers.TicketMapper;
 import events.paiya.eventmanager.resources.TicketResource;
 import events.paiya.eventmanager.services.TicketService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;;
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/v1/tickets")
+@Slf4j
 public class TicketController {
 
     private final TicketService ticketService;
@@ -32,12 +25,13 @@ public class TicketController {
         this.ticketMapper = ticketMapper;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<TicketResource> create(@RequestBody TicketResource ticketResource){
+        log.info(ticketResource.toString());
         Ticket ticket = ticketMapper.toEntity(ticketResource);
         ticket = ticketService.save(ticket);
         ticketResource = ticketMapper.toResource(ticket);
-        return ResponseEntity.ok().body(ticketResource);
+        return ResponseEntity.created(null).body(ticketResource);
     }
 
     @GetMapping()
@@ -54,9 +48,10 @@ public class TicketController {
         return ResponseEntity.ok().body(ticketResource);
     } 
 
-    @PatchMapping()
-    public ResponseEntity<TicketResource> update(@RequestBody TicketResource ticketResource){
-        Ticket ticket = ticketMapper.toEntity(ticketResource);
+    @PatchMapping("/{id}")
+    public ResponseEntity<TicketResource> update(@PathVariable(name = "id") String id, @RequestBody TicketResource ticketResource){
+        Ticket ticket = ticketService.findById(id);
+        ticketMapper.update(ticketResource, ticket);
         ticket = ticketService.save(ticket);
         ticketResource = ticketMapper.toResource(ticket);
         return ResponseEntity.ok().body(ticketResource);

@@ -8,9 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Document
@@ -32,10 +30,8 @@ public class Event{
     private LocalDateTime publicationDate;
     private Boolean visibility;
     private Langages eventPageLanguage;
-    private LocalDate startingDate;
-    private LocalDate endingDate;
-    private LocalTime startingHour;
-    private LocalTime endingHour;
+    private LocalDateTime startingDateTime;
+    private LocalDateTime endingDateTime;
     private String timeZone;
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;

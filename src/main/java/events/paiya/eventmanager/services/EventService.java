@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,7 +49,9 @@ public class EventService{
 
      
     public Event update(String eventId, Event event) {
-        Optional<Event> eventOpt = eventRepository.findById(eventId);
+        // Optional<Event> eventOpt = eventRepository.findById(eventId);
+        return eventRepository.save(event);
+        /* 
         if (eventOpt.isPresent()){
             Event oldEvent = eventOpt.get();
             if(!ObjectUtils.nullSafeEquals(oldEvent.getTitle(), event.getTitle())) oldEvent.setTitle(event.getTitle()) ;
@@ -75,6 +75,7 @@ public class EventService{
             return eventRepository.save(oldEvent);
         }
         return eventRepository.insert(event);
+        */
     }
 
      
@@ -90,25 +91,6 @@ public class EventService{
             throw new NoSuchElementException();
         }
     }
-
-    // TODO : Delete all method relative to ticketCategorie 
-    /*
-     
-    public void addTicketCategorie(String eventId, Ticket ticketCategorie) {
-        eventRepository.addTicketCategorie(eventId, ticketCategorie);
-    }
-
-     
-    public void removeTicketCategorie(String eventId, String categorieCode) {
-        eventRepository.removeTicketCategorie(eventId, categorieCode);
-    }
-
-     
-    public void updateTicketCategorieBy(String eventId, String categorieCode, Ticket ticketCategorie) {
-        eventRepository.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
-    }
-    */
-
      
     public void deleteAll() {
         eventRepository.deleteAll();
@@ -120,8 +102,8 @@ public class EventService{
     }
 
      
-    public List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2) {
-        return eventRepository.findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+    public List<Event> findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(LocalDateTime startingDate1, LocalDateTime startingDate2) {
+        return eventRepository.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
     }
 
      

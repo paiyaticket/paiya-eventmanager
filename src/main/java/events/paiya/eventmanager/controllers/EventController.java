@@ -6,7 +6,6 @@ import events.paiya.eventmanager.resources.EventResource;
 import events.paiya.eventmanager.services.EventService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -46,9 +45,9 @@ public class EventController {
 
     @GetMapping("date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
-        LocalDate minD = LocalDate.parse(minDate);
-        LocalDate maxD = LocalDate.parse(maxDate);
-        List<Event> events = eventService.findEventsByStartingDateBetweenAndVisibilityIsTrue(minD, maxD);
+        LocalDateTime minD = LocalDateTime.parse(minDate);
+        LocalDateTime maxD = LocalDateTime.parse(maxDate);
+        List<Event> events = eventService.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(minD, maxD);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
@@ -92,35 +91,7 @@ public class EventController {
         Event event = eventService.publish(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
-
-    /* 
-    @PutMapping("{id}/ticket-categorie/add")
-    public ResponseEntity<EventResource> addTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                            @RequestBody @NotNull Ticket ticketCategorie) {
-        if (ticketCategorie.getCode() == null) ticketCategorie.setCode(eventId + ".CAT." + UUID.randomUUID());
-        eventService.addTicketCategorie(eventId, ticketCategorie);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-
-    @PutMapping("{id}/ticket-categorie/update/{categorieCode}")
-    public ResponseEntity<EventResource> updateTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                               @PathVariable(name = "categorieCode") String categorieCode,
-                                                               @RequestBody @NotNull Ticket ticketCategorie) {
-        eventService.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-
-    @PutMapping("{id}/ticket-categorie/remove/{categorieCode}")
-    public ResponseEntity<EventResource> removeTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                               @PathVariable(name = "categorieCode") String categorieCode) {
-        eventService.removeTicketCategorie(eventId, categorieCode);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-    */
-
+    
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable String id){
         this.eventService.deleteById(id);

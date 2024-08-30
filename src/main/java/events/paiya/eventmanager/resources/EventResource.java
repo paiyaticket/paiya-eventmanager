@@ -9,9 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +39,8 @@ public class EventResource{
     @Builder.Default
     private Boolean visibility = false;
     private Langages eventPageLanguage;
-    private LocalDate startingDate;
-    private LocalDate endingDate;
-    private LocalTime startingHour;
-    private LocalTime endingHour;
+    private LocalDateTime startingDateTime;
+    private LocalDateTime endingDateTime;
     private String timeZone;
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;

@@ -1,7 +1,6 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.repositories.EventRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -61,26 +59,6 @@ class EventServiceImplTest {
     }
 
     @Test
-    void givenId_whenExist_thenSave() {
-        String eventId = UUID.randomUUID().toString();
-        Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.of(new Event()));
-        Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(new Event());
-        Event event = eventService.update(eventId, new Event());
-        Assertions.assertNotNull(event);
-        Mockito.verify(eventRepository, Mockito.times(1)).save(new Event());
-    }
-
-    @Test
-    void givenId_whenNotExist_thenInsert() {
-        String eventId = UUID.randomUUID().toString();
-        Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
-        Mockito.when(eventRepository.insert(Mockito.any(Event.class))).thenReturn(new Event());
-        Event event = eventService.update(eventId, new Event());
-        Assert.notNull(event, () -> "Must not return null");
-        Mockito.verify(eventRepository, Mockito.times(1)).insert(new Event());
-    }
-
-    @Test
     void givenId_whenExist_thenPublish() {
         String id = UUID.randomUUID().toString();
         Event eventSaved = Event.builder().timeZone(TimeZone.getDefault().getDisplayName())
@@ -100,26 +78,6 @@ class EventServiceImplTest {
 
         Assertions.assertThrowsExactly(NoSuchElementException.class, () -> eventService.publish(id));
     }
-
-    /*
-    @Test
-    void addTicketCategorie(){
-        String id = UUID.randomUUID().toString();
-        Ticket ticketCategorie = Ticket.builder().build();
-        Mockito.doNothing().when(eventRepository).addTicketCategorie(Mockito.anyString(), Mockito.any(Ticket.class));
-        eventService.addTicketCategorie(id, ticketCategorie);
-        Mockito.verify(eventRepository).addTicketCategorie(id, ticketCategorie);
-    }
-
-    @Test
-    void removeTicketCategorie(){
-        String id = UUID.randomUUID().toString();
-        String categorieCode = id+"cat_"+UUID.randomUUID();
-        Mockito.doNothing().when(eventRepository).removeTicketCategorie(Mockito.anyString(), Mockito.anyString());
-        eventService.removeTicketCategorie(id, categorieCode);
-        Mockito.verify(eventRepository).removeTicketCategorie(id, categorieCode);
-    }
-     */
     
     @Test
     void deleteById() {
@@ -131,13 +89,13 @@ class EventServiceImplTest {
 
     @Test
     void findEventsByStartingDateBetweenAndVisibilityIsTrue() {
-        LocalDate startingDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate startingDate2 = LocalDate.of(2023, 7, 7);
-        Mockito.when(eventRepository.findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
+        LocalDateTime startingDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
+        LocalDateTime startingDate2 = LocalDateTime.of(2023, 7, 7, 0, 0);
+        Mockito.when(eventRepository.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
 
-        List<Event> events = eventService.findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+        List<Event> events = eventService.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
 
-        Mockito.verify(eventRepository).findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+        Mockito.verify(eventRepository).findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 

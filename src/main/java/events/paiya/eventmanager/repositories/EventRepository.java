@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Component
 public interface EventRepository extends MongoRepository<Event, String> {
@@ -19,7 +19,7 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> findEventsByCreatedBy(String owner);
     List<Event> findAllByVisibilityIsTrue();
     Page<Event> findByVisibilityIsTrue(Pageable pageable);
-    List<Event> findEventsByStartingDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2);
+    List<Event> findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(LocalDateTime startingDate1, LocalDateTime startingDate2);
     List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title);
 
     //@Query("{'physicalAdresse.town': {$regex : ?0, $options : 'i'}, 'visibility' :  true}")

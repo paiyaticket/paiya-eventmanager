@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +29,6 @@ public class EventControllerIntegrationTest {
     private static final String EVENT1_ID = "64ef8526c36bf3454a04cf92";
     private static final String EVENT2_ID = "65ed4726c36bf3454a04cf92";
     private static final String EVENT3_ID = "67ed5426c36bf3454a04cf98";
-    private static final String TICKET_CATEGORIE_CODE = EVENT1_ID+".CAT.e8f7c3ef-f416-4a61-ab50-60902e31dab2";
 
     MockMvc mockMvc;
 
@@ -238,13 +237,13 @@ public class EventControllerIntegrationTest {
     private void buildAndSaveTwoEvents(){
         Event event2 = buildEvent(EVENT2_ID,
                 "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73");
-        event2.setStartingDate(LocalDate.of(2023, 7, 1));
+        event2.setStartingDateTime(LocalDateTime.of(2023, 7, 1, 0, 0));
         event2.setVisibility(true);
         event2.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Daloa").build());
 
         Event event3 = buildEvent(EVENT3_ID,
                 "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73");
-        event3.setStartingDate(LocalDate.of(2023, 8, 1));
+        event3.setStartingDateTime(LocalDateTime.of(2023, 8, 1, 0, 0));
         event3.setVisibility(true);
         event3.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
 
