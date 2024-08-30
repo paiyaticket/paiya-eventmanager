@@ -32,8 +32,10 @@ public class Ticket{
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime endDateOfSales;
-    private Integer minimumTicketQuantityPerOrder;
-    private Integer maximumTicketQuantityPerOrder;
+    @Builder.Default
+    private Integer minimumTicketQuantityPerOrder = 1;
+    @Builder.Default
+    private Integer maximumTicketQuantityPerOrder = 3;
     private String description;
     private String eventId;
 
