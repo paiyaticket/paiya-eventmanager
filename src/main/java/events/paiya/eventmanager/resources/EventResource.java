@@ -52,7 +52,7 @@ public class EventResource{
     private List<CashAccount> cashAccounts = new ArrayList<>();
 
     // Audit properties
-    private String createdBy;
+    private String owner;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private Integer version;

@@ -37,7 +37,7 @@ public class EventService{
 
      
     public List<Event>  findEventsByOwner(String owner) {
-        return eventRepository.findEventsByCreatedBy(owner);
+        return eventRepository.findEventsByOwner(owner);
     }
 
      

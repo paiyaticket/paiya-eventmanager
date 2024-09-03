@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 public abstract class BaseEntity {
-    private String createdBy;
+    private String owner;
     @CreatedDate
     private LocalDateTime createdDate;
     @LastModifiedDate

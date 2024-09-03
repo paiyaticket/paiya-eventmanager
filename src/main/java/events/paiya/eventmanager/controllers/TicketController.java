@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/v1/tickets")
-@Slf4j
 public class TicketController {
 
     private final TicketService ticketService;
@@ -27,7 +26,6 @@ public class TicketController {
 
     @PostMapping
     public ResponseEntity<TicketResource> create(@RequestBody TicketResource ticketResource){
-        log.info(ticketResource.toString());
         Ticket ticket = ticketMapper.toEntity(ticketResource);
         ticket = ticketService.save(ticket);
         ticketResource = ticketMapper.toResource(ticket);

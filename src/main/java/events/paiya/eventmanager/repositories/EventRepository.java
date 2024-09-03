@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Component
 public interface EventRepository extends MongoRepository<Event, String> {
     Optional<Event> findByIdAndVisibilityIsTrue(String id);
-    List<Event> findEventsByCreatedBy(String owner);
+    List<Event> findEventsByOwner(String owner);
     List<Event> findAllByVisibilityIsTrue();
     Page<Event> findByVisibilityIsTrue(Pageable pageable);
     List<Event> findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(LocalDateTime startingDate1, LocalDateTime startingDate2);

@@ -25,7 +25,7 @@ public class TicketResource {
     private String eventId;
 
     // Audit properties
-    private String createdBy;
+    private String owner;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private Integer version;

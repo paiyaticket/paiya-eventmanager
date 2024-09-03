@@ -37,7 +37,7 @@ class EventServiceImplTest {
 
     @Test
     void givenOwnerId_thenFindEventsByOwner() {
-        Mockito.when(eventRepository.findEventsByCreatedBy(Mockito.anyString())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findEventsByOwner(Mockito.anyString())).thenReturn(List.of(new Event()));
         List<Event> events = eventService.findEventsByOwner(UUID.randomUUID().toString());
         Assertions.assertFalse(events.isEmpty());
     }

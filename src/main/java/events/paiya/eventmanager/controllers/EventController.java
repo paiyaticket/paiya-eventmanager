@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/v1/events")
 public class EventController {
@@ -38,7 +39,7 @@ public class EventController {
     }
 
     @GetMapping("owned-by")
-    public ResponseEntity<List<EventResource>> findEventsByOwner(@RequestParam(name = "ownerId") String ownerId){
+    public ResponseEntity<List<EventResource>> findEventsByOwner(@RequestParam(name = "owner") String ownerId){
         List<Event> events = eventService.findEventsByOwner(ownerId);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }

@@ -40,7 +40,7 @@ public class Event{
     private List<CashAccount> cashAccounts;
 
     // Audit properties
-    private String createdBy;
+    private String owner;
     @CreatedDate
     private LocalDateTime createdDate;
     @LastModifiedDate
