@@ -5,6 +5,7 @@ import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.OnlineAddress;
 import events.paiya.eventmanager.domains.PhysicalAddress;
 import events.paiya.eventmanager.domains.Ticket;
+import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -26,7 +27,7 @@ public class EventResource{
     private String title;
 
     @Size(max = 30, message = "Must contain no more than 50 caracters")
-    private String eventType;
+    private EventType eventType;
     @Size(max = 30, message = "Must contain no more than 50 caracters")
     private String eventCategory;
     @Builder.Default

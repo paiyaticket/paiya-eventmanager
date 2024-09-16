@@ -1,5 +1,6 @@
 package events.paiya.eventmanager.domains;
 
+import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,7 +22,7 @@ public class Event{
     @Id
     private String id;
     private String title;
-    private String eventType;
+    private EventType eventType;
     private String eventCategory;
     private List<String> tags;
     private String imageCover;
