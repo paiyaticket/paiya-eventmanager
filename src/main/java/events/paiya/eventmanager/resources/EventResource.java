@@ -33,7 +33,7 @@ public class EventResource{
     private List<String> tags = new ArrayList<>();
     private String imageCover;
     @Size(max = 150, message = "Must contain no more than 100 caracters")
-    private String resume;
+    private String summary;
     @Size(max = 3000, message = "Must contain no more than 100 caracters")
     private String description;
     private LocalDateTime publicationDate;

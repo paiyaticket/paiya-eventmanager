@@ -25,7 +25,7 @@ public class Event{
     private String eventCategory;
     private List<String> tags;
     private String imageCover;
-    private String resume;
+    private String summary;
     private String description;
     private LocalDateTime publicationDate;
     private Boolean visibility;

@@ -230,7 +230,7 @@ public class EventControllerIntegrationTest {
                 .tags(List.of("danse", "ziglibiti", "Abidjan", "côte d'ivoire"))
                 .imageCover("")
                 .visibility(true)
-                .createdBy("23ff1ef4-283a-4a6a-9e73-c33c6bb53d73")
+                .owner("23ff1ef4-283a-4a6a-9e73-c33c6bb53d73")
                 .build();
     }
 
@@ -267,7 +267,7 @@ public class EventControllerIntegrationTest {
                 .imageCover(imageCover)
                 .resume(resume)
                 .description(description)
-                .createdBy(createdBy)
+                .owner(createdBy)
                 .build();
     }
 
