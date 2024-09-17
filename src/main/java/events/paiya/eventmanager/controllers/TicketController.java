@@ -4,11 +4,11 @@ import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.mappers.TicketMapper;
 import events.paiya.eventmanager.resources.TicketResource;
 import events.paiya.eventmanager.services.TicketService;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @CrossOrigin
@@ -29,7 +29,8 @@ public class TicketController {
         Ticket ticket = ticketMapper.toEntity(ticketResource);
         ticket = ticketService.save(ticket);
         ticketResource = ticketMapper.toResource(ticket);
-        return ResponseEntity.created(null).body(ticketResource);
+        URI uri = URI.create("");
+        return ResponseEntity.created(uri).body(ticketResource);
     }
 
     @GetMapping()
