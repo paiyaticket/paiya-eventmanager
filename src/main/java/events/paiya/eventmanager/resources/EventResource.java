@@ -4,6 +4,7 @@ import events.paiya.eventmanager.domains.CashAccount;
 import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.OnlineAddress;
 import events.paiya.eventmanager.domains.PhysicalAddress;
+import events.paiya.eventmanager.domains.Scheduling;
 import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
@@ -11,7 +12,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,8 @@ public class EventResource{
     @NotBlank(message = "Title is mandatory")
     @Size(max = 100, message = "Must contain no more than 100 caracters")
     private String title;
-
-    @Size(max = 30, message = "Must contain no more than 50 caracters")
-    private EventType eventType;
+    @Builder.Default
+    private EventType eventType = EventType.SINGLE_EVENT;
     @Size(max = 30, message = "Must contain no more than 50 caracters")
     private String eventCategory;
     @Builder.Default
@@ -40,12 +40,16 @@ public class EventResource{
     private LocalDateTime publicationDate;
     @Builder.Default
     private Boolean visibility = false;
-    private Langages eventPageLanguage;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
+    
+    private LocalDate date;
+    private LocalTime startingTime;
+    private LocalTime endingTime;
+    private Scheduling scheduling;
     private String timeZone;
+    
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;
+    private Langages eventPageLanguage;
     private EventOrganizer eventOrganizer;
     @Builder.Default
     private List<Ticket> tickets = new ArrayList<>();

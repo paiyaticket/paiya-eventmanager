@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.time.LocalDate;
+
+
 
 @Component
 @Slf4j
@@ -104,10 +107,10 @@ public class EventService{
         eventRepository.deleteById(eventId);
     }
 
-     
-    public List<Event> findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(LocalDateTime startingDate1, LocalDateTime startingDate2) {
-        return eventRepository.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+    public List<Event> findEventsByDateBetweenAndVisibilityIsTrue(LocalDate startingDate1, LocalDate startingDate2) {
+        return eventRepository.findEventsByDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
     }
+
 
      
     public List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title) {

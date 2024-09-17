@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -89,13 +89,13 @@ class EventServiceImplTest {
 
     @Test
     void findEventsByStartingDateBetweenAndVisibilityIsTrue() {
-        LocalDateTime startingDate1 = LocalDateTime.of(2023, 7, 1, 0, 0);
-        LocalDateTime startingDate2 = LocalDateTime.of(2023, 7, 7, 0, 0);
-        Mockito.when(eventRepository.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
+        LocalDate startingDate1 = LocalDate.of(2023, 7, 1);
+        LocalDate startingDate2 = LocalDate.of(2023, 7, 7);
+        Mockito.when(eventRepository.findEventsByDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
 
-        List<Event> events = eventService.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+        List<Event> events = eventService.findEventsByDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
 
-        Mockito.verify(eventRepository).findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+        Mockito.verify(eventRepository).findEventsByDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 

@@ -17,6 +17,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDate;
+
 
 @CrossOrigin
 @RestController
@@ -46,9 +48,9 @@ public class EventController {
 
     @GetMapping("date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
-        LocalDateTime minD = LocalDateTime.parse(minDate);
-        LocalDateTime maxD = LocalDateTime.parse(maxDate);
-        List<Event> events = eventService.findEventsByStartingDateTimeBetweenAndVisibilityIsTrue(minD, maxD);
+        LocalDate minD = LocalDate.parse(minDate);
+        LocalDate maxD = LocalDate.parse(maxDate);
+        List<Event> events = eventService.findEventsByDateBetweenAndVisibilityIsTrue(minD, maxD);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 

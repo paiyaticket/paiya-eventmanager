@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.PhysicalAddress;
+import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.services.EventService;
 import org.junit.jupiter.api.*;
@@ -14,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,20 +73,20 @@ public class EventControllerIntegrationTest {
     @Test
     @Order(2)
     void findEventsByOwner() throws Exception {
-        String ownerId = "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73";
+        String ownerId = "owner@gmail.com";
         mockMvc.perform(get("/v1/events/owned-by")
-                        .param("ownerId", ownerId)
+                        .param("owner", ownerId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$[0].createdBy").value(ownerId));
+                .andExpect(jsonPath("$[0].owner").value(ownerId));
     }
 
     @Test
     @Order(3)
     void findEventsByStartingDateBetweenAndVisibilityIsTrue()  throws Exception {
-        String minDate = "2023-06-30T04:42:37.099456";
-        String maxDate = "2023-08-30T04:42:37.099456";
+        String minDate = "2023-06-30";
+        String maxDate = "2023-08-30";
         this.buildAndSaveTwoEvents();
         mockMvc.perform(get("/v1/events/date-between")
                         .param("minDate", minDate)
@@ -161,58 +162,6 @@ public class EventControllerIntegrationTest {
                 .andExpect(jsonPath("$.visibility").value(true));
     }
 
-    /*
-    @Test
-    @Order(9)
-    void addTicketCategorie() throws Exception {
-        Ticket ticketCategorie = Ticket.builder()
-                .code(TICKET_CATEGORIE_CODE)
-                .name("stater")
-                .description("Low standing").price(10000d).quantity(100)
-                .startDateOfSales(LocalDateTime.parse("2023-10-05T00:00:00"))
-                .endDateOfSales(LocalDateTime.parse("2023-10-20T00:00:00")).build();
-
-        mockMvc.perform(put("/v1/events/"+EVENT1_ID+"/ticket-categorie/add")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(ticketCategorie)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ticketCategories").isNotEmpty())
-                .andExpect(jsonPath("$.ticketCategories[0].price").value(10000d));
-    }
-
-    
-    @Test
-    @Order(10)
-    void updateTicketCategorie() throws Exception {
-        Ticket updateTicketCategorie = Ticket.builder()
-                .code(TICKET_CATEGORIE_CODE)
-                .name("stater updated")
-                .description("Low standing").price(10500d).quantity(90)
-                .startDateOfSales(LocalDateTime.parse("2023-10-05T00:00:00"))
-                .endDateOfSales(LocalDateTime.parse("2023-10-20T00:00:00")).build();
-
-        mockMvc.perform(put("/v1/events/"+EVENT1_ID+"/ticket-categorie/update/"+TICKET_CATEGORIE_CODE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(updateTicketCategorie)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ticketCategories").isNotEmpty())
-                .andExpect(jsonPath("$.ticketCategories[0].price").value(10500d))
-                .andExpect(jsonPath("$.ticketCategories[0].quantity").value(90))
-                .andExpect(jsonPath("$.ticketCategories[0].categorieName").value("stater updated"))
-                .andExpect(jsonPath("$.ticketCategories[0].description").value("Low standing"));
-    }
-
-    @Test
-    @Order(11)
-    void removeTicketCategorie() throws Exception {
-
-        mockMvc.perform(put("/v1/events/"+EVENT1_ID+"/ticket-categorie/remove/"+TICKET_CATEGORIE_CODE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ticketCategories").isEmpty());
-    }
-        */
-
     @Test
     @Order(12)
     void deleteEvent() throws Exception {
@@ -225,25 +174,25 @@ public class EventControllerIntegrationTest {
         return Event.builder()
                 .id(EVENT1_ID)
                 .title("Festival du ziglibiti")
-                .eventType("Festival")
+                .eventType(EventType.SINGLE_EVENT)
                 .eventCategory("")
                 .tags(List.of("danse", "ziglibiti", "Abidjan", "côte d'ivoire"))
                 .imageCover("")
                 .visibility(true)
-                .owner("23ff1ef4-283a-4a6a-9e73-c33c6bb53d73")
+                .owner("owner@gmail.com")
                 .build();
     }
 
     private void buildAndSaveTwoEvents(){
         Event event2 = buildEvent(EVENT2_ID,
-                "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73");
-        event2.setStartingDateTime(LocalDateTime.of(2023, 7, 1, 0, 0));
+                "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
+        event2.setDate(LocalDate.of(2023, 7, 1));
         event2.setVisibility(true);
         event2.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Daloa").build());
 
         Event event3 = buildEvent(EVENT3_ID,
-                "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "23ff1ef4-283a-4a6a-9e73-c33c6bb53d73");
-        event3.setStartingDateTime(LocalDateTime.of(2023, 8, 1, 0, 0));
+                "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
+        event3.setDate(LocalDate.of(2023, 8, 1));
         event3.setVisibility(true);
         event3.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
 
@@ -253,19 +202,18 @@ public class EventControllerIntegrationTest {
 
     private Event buildEvent(String id, String... params){
         String title = (params.length > 0) ? params[0] : "";
-        String eventType = (params.length > 1) ? params[1] : "";
         String eventCategory = (params.length > 2) ? params[2] : "";
         String imageCover = (params.length > 3) ? params[3] : "";
-        String resume = (params.length > 4) ? params[4] : "";
+        String summary = (params.length > 4) ? params[4] : "";
         String description = (params.length > 5) ? params[5] : "";
         String createdBy = (params.length > 6) ? params[6] : "";
         return Event.builder()
                 .id(id)
                 .title(title)
-                .eventType(eventType)
+                .eventType(EventType.SINGLE_EVENT)
                 .eventCategory(eventCategory)
                 .imageCover(imageCover)
-                .resume(resume)
+                .summary(summary)
                 .description(description)
                 .owner(createdBy)
                 .build();

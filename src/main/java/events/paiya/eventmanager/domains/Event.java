@@ -9,7 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.List;
 
 @Document
@@ -30,13 +30,18 @@ public class Event{
     private String description;
     private LocalDateTime publicationDate;
     private Boolean visibility;
-    private Langages eventPageLanguage;
-    private LocalDateTime startingDateTime;
-    private LocalDateTime endingDateTime;
+
+    private LocalDate date;
+    private LocalTime startingTime;
+    private LocalTime endingTime;
+    private Scheduling scheduling;
     private String timeZone;
+    
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;
+    private Langages eventPageLanguage;
     private EventOrganizer eventOrganizer;
+
     private List<Ticket> tickets;
     private List<CashAccount> cashAccounts;
 
@@ -48,4 +53,5 @@ public class Event{
     private LocalDateTime lastModifiedDate;
     @Version
     private Integer version;
+
 }
