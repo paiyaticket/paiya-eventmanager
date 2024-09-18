@@ -12,6 +12,6 @@ import java.time.*;
 @ToString
 public class ScheduledInstance {
     private LocalDate date;
-    private LocalTime startingTime;
-    private LocalTime endingTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
 }

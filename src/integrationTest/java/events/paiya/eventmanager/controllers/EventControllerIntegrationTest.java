@@ -159,7 +159,7 @@ public class EventControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.publicationDate").exists())
-                .andExpect(jsonPath("$.visibility").value(true));
+                .andExpect(jsonPath("$.published").value(true));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class EventControllerIntegrationTest {
                 .eventCategory("")
                 .tags(List.of("danse", "ziglibiti", "Abidjan", "côte d'ivoire"))
                 .imageCover("")
-                .visibility(true)
+                .published(true)
                 .owner("owner@gmail.com")
                 .build();
     }

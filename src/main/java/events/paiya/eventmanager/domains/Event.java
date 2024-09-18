@@ -32,8 +32,8 @@ public class Event{
     private Boolean published;
 
     private LocalDate date;
-    private LocalTime startingTime;
-    private LocalTime endingTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Scheduling scheduling;
     private String timeZone;
     

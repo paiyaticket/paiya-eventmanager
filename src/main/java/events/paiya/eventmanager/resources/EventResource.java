@@ -43,8 +43,8 @@ public class EventResource{
     private Boolean published = false;
     
     private LocalDate date;
-    private LocalTime startingTime;
-    private LocalTime endingTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Scheduling scheduling;
     private String timeZone;
     
@@ -58,7 +58,7 @@ public class EventResource{
     private List<CashAccount> cashAccounts = new ArrayList<>();
 
     private PublishSettings publishSettings;
-    
+
     // Audit properties
     private String owner;
     private LocalDateTime createdDate;
