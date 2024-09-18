@@ -49,13 +49,13 @@ public class EventController {
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
         LocalDate minD = LocalDate.parse(minDate);
         LocalDate maxD = LocalDate.parse(maxDate);
-        List<Event> events = eventService.findEventsByDateBetweenAndVisibilityIsTrue(minD, maxD);
+        List<Event> events = eventService.findEventsByDateBetweenAndPublishedIsTrue(minD, maxD);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
     @GetMapping("title-like")
     public ResponseEntity<List<EventResource>> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(@RequestParam(name = "title") String title){
-        List<Event> events = eventService.findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(title);
+        List<Event> events = eventService.findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(title);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
@@ -68,7 +68,7 @@ public class EventController {
     @GetMapping("paginated")
     public ResponseEntity<List<EventResource>> findByVisibilityIsTrue(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size){
         Pageable pageable = PageRequest.of(page, size);
-        Page<Event> eventPage = eventService.findByVisibilityIsTrue(pageable);
+        Page<Event> eventPage = eventService.findByPublishedIsTrue(pageable);
         List<EventResource> eventResourceList = eventMapper.toResourceList(eventPage.stream().toList());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Total-Elements", String.valueOf(eventPage.getTotalElements()));
@@ -78,7 +78,7 @@ public class EventController {
 
     @GetMapping
     public ResponseEntity<List<EventResource>> findAllByVisibilityIsTrue(){
-        return ResponseEntity.ok(eventMapper.toResourceList(eventService.findAllByVisibilityIsTrue()));
+        return ResponseEntity.ok(eventMapper.toResourceList(eventService.findAllByPublishedIsTrue()));
     }
 
     @PatchMapping("{id}")

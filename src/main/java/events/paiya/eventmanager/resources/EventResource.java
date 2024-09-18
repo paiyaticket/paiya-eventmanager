@@ -4,6 +4,7 @@ import events.paiya.eventmanager.domains.CashAccount;
 import events.paiya.eventmanager.domains.EventOrganizer;
 import events.paiya.eventmanager.domains.OnlineAddress;
 import events.paiya.eventmanager.domains.PhysicalAddress;
+import events.paiya.eventmanager.domains.PublishSettings;
 import events.paiya.eventmanager.domains.Scheduling;
 import events.paiya.eventmanager.domains.Ticket;
 import events.paiya.eventmanager.enumeration.EventType;
@@ -39,7 +40,7 @@ public class EventResource{
     private String description;
     private LocalDateTime publicationDate;
     @Builder.Default
-    private Boolean visibility = false;
+    private Boolean published = false;
     
     private LocalDate date;
     private LocalTime startingTime;
@@ -56,6 +57,8 @@ public class EventResource{
     @Builder.Default
     private List<CashAccount> cashAccounts = new ArrayList<>();
 
+    private PublishSettings publishSettings;
+    
     // Audit properties
     private String owner;
     private LocalDateTime createdDate;

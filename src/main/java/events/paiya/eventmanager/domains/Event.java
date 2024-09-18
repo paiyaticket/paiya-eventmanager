@@ -29,7 +29,7 @@ public class Event{
     private String summary;
     private String description;
     private LocalDateTime publicationDate;
-    private Boolean visibility;
+    private Boolean published;
 
     private LocalDate date;
     private LocalTime startingTime;
@@ -41,10 +41,11 @@ public class Event{
     private OnlineAddress onlineAdresse;
     private Langages eventPageLanguage;
     private EventOrganizer eventOrganizer;
-
     private List<Ticket> tickets;
     private List<CashAccount> cashAccounts;
 
+    private PublishSettings publishSettings;
+    
     // Audit properties
     private String owner;
     @CreatedDate

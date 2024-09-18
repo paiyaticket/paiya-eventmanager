@@ -17,22 +17,22 @@ import java.time.LocalDate;
 @Component
 public interface EventRepository extends MongoRepository<Event, String> {
 
-    Optional<Event> findByIdAndVisibilityIsTrue(String id);
+    Optional<Event> findByIdAndPublishedIsTrue(String id);
 
     List<Event> findEventsByOwner(String owner);
 
-    List<Event> findAllByVisibilityIsTrue();
+    List<Event> findAllByPublishedIsTrue();
 
-    Page<Event> findByVisibilityIsTrue(Pageable pageable);
+    Page<Event> findByPublishedIsTrue(Pageable pageable);
 
-    List<Event> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(String title);
+    List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title);
 
     // @Query("{'physicalAdresse.town': {$regex : ?0, $options : 'i'}, 'visibility' :  true}")
     // List<Event> findEventsByTown(String townNameRegex);
 
-    List<Event> findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue(String town);
+    List<Event> findEventsByPhysicalAdresseTownLikeIgnoreCaseAndPublishedIsTrue(String town);
 
-    List<Event> findEventsByDateBetweenAndVisibilityIsTrue(LocalDate date1, LocalDate date2);
+    List<Event> findEventsByDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")

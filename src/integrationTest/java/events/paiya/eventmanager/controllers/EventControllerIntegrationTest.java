@@ -143,7 +143,7 @@ public class EventControllerIntegrationTest {
                 .id(UUID.randomUUID().toString())
                 .name("djédjé prod").email("djedje@gmail.com").build());
 
-        Event oldEvent = eventService.findByIdAndVisibilityIsTrue(EVENT1_ID);
+        Event oldEvent = eventService.findByIdAndPublishedIsTrue(EVENT1_ID);
 
         mockMvc.perform(patch("/v1/events/"+EVENT1_ID)
                         .content(objectMapper.writeValueAsBytes(eventMapper.toResource(event)))
@@ -187,13 +187,13 @@ public class EventControllerIntegrationTest {
         Event event2 = buildEvent(EVENT2_ID,
                 "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
         event2.setDate(LocalDate.of(2023, 7, 1));
-        event2.setVisibility(true);
+        event2.setPublished(true);
         event2.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Daloa").build());
 
         Event event3 = buildEvent(EVENT3_ID,
                 "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
         event3.setDate(LocalDate.of(2023, 8, 1));
-        event3.setVisibility(true);
+        event3.setPublished(true);
         event3.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
 
         eventService.create(event2);
