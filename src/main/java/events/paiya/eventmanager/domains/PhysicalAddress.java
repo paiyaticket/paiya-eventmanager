@@ -9,6 +9,9 @@ import lombok.EqualsAndHashCode;
 @Builder
 public class PhysicalAddress extends Adresse{
     private String location;
+    private String locationIndication;
+    private String street;
+    private String streetNumber;
     private String town;
     private String postalCode;
     private String country;

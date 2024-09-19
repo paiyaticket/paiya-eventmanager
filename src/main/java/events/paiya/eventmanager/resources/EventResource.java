@@ -1,7 +1,9 @@
 package events.paiya.eventmanager.resources;
 
+import events.paiya.eventmanager.domains.AgendaPhase;
 import events.paiya.eventmanager.domains.CashAccount;
 import events.paiya.eventmanager.domains.EventOrganizer;
+import events.paiya.eventmanager.domains.Question;
 import events.paiya.eventmanager.domains.OnlineAddress;
 import events.paiya.eventmanager.domains.PhysicalAddress;
 import events.paiya.eventmanager.domains.PublishSettings;
@@ -34,9 +36,9 @@ public class EventResource{
     @Builder.Default
     private List<String> tags = new ArrayList<>();
     private String imageCover;
-    @Size(max = 150, message = "Must contain no more than 100 caracters")
+    @Size(max = 300, message = "Must contain no more than 300 caracters")
     private String summary;
-    @Size(max = 3000, message = "Must contain no more than 100 caracters")
+    @Size(max = 3000, message = "Must contain no more than 3000 caracters")
     private String description;
     private LocalDateTime publicationDate;
     @Builder.Default
@@ -58,6 +60,9 @@ public class EventResource{
     private List<CashAccount> cashAccounts = new ArrayList<>();
 
     private PublishSettings publishSettings;
+
+    private List<AgendaPhase> agenda;
+    private List<Question> faq;
 
     // Audit properties
     private String owner;

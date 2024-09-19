@@ -45,6 +45,9 @@ public class Event{
     private List<CashAccount> cashAccounts;
 
     private PublishSettings publishSettings;
+
+    private List<AgendaPhase> agenda;
+    private List<Question> faq;
     
     // Audit properties
     private String owner;
