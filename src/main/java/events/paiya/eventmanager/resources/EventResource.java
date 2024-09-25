@@ -44,11 +44,12 @@ public class EventResource{
     @Builder.Default
     private Boolean published = false;
     
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    // private String date;
+    private String startTime;
+    private String endTime;
     private Scheduling scheduling;
     private String timeZone;
+    private Integer timeZoneOffset;
     
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;

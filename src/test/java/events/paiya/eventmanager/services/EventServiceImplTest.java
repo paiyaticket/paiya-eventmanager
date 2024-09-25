@@ -89,13 +89,13 @@ class EventServiceImplTest {
 
     @Test
     void findEventsByStartingDateBetweenAndVisibilityIsTrue() {
-        LocalDate startingDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate startingDate2 = LocalDate.of(2023, 7, 7);
-        Mockito.when(eventRepository.findEventsByDateBetweenAndPublishedIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
+        Instant startingDate1 = Instant.parse("2023-07-01T12:00:00Z");
+        Instant startingDate2 = Instant.parse("2023-07-07T12:00:00Z");
+        Mockito.when(eventRepository.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
 
-        List<Event> events = eventService.findEventsByDateBetweenAndPublishedIsTrue(startingDate1, startingDate2);
+        List<Event> events = eventService.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
 
-        Mockito.verify(eventRepository).findEventsByDateBetweenAndPublishedIsTrue(startingDate1, startingDate2);
+        Mockito.verify(eventRepository).findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 

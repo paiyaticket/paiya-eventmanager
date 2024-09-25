@@ -31,11 +31,13 @@ public class Event{
     private LocalDateTime publicationDate;
     private Boolean published;
 
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    // private LocalDate date;
+    // private Instant date;
+    private Instant startTime;
+    private Instant endTime;
     private Scheduling scheduling;
     private String timeZone;
+    private Integer timeZoneOffset;
     
     private PhysicalAddress physicalAdresse;
     private OnlineAddress onlineAdresse;

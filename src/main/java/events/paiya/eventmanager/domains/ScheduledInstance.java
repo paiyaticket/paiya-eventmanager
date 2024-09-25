@@ -11,7 +11,6 @@ import java.time.*;
 @AllArgsConstructor
 @ToString
 public class ScheduledInstance {
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private Instant startTime;
+    private Instant endTime;
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.Instant;
 import java.time.LocalDate;
 
 
@@ -27,12 +28,13 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title);
 
-    // @Query("{'physicalAdresse.town': {$regex : ?0, $options : 'i'}, 'visibility' :  true}")
-    // List<Event> findEventsByTown(String townNameRegex);
-
     List<Event> findEventsByPhysicalAdresseTownLikeIgnoreCaseAndPublishedIsTrue(String town);
 
-    List<Event> findEventsByDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
+    List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
+
+    List<Event> findEventsByEndTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
+
+    List<Event> findEventsByPublicationDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")

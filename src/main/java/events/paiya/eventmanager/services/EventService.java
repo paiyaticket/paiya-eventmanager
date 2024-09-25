@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.time.Instant;
 import java.time.LocalDate;
 
 
@@ -81,8 +82,8 @@ public class EventService{
         eventRepository.deleteById(eventId);
     }
 
-    public List<Event> findEventsByDateBetweenAndPublishedIsTrue(LocalDate startingDate1, LocalDate startingDate2) {
-        return eventRepository.findEventsByDateBetweenAndPublishedIsTrue(startingDate1, startingDate2);
+    public List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant startingDate1, Instant startingDate2) {
+        return eventRepository.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
     }
 
 

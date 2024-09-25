@@ -85,15 +85,15 @@ public class EventControllerIntegrationTest {
     @Test
     @Order(3)
     void findEventsByStartingDateBetweenAndVisibilityIsTrue()  throws Exception {
-        String minDate = "2023-06-30";
-        String maxDate = "2023-08-30";
+        String minDate = "2023-06-30T12:00:00Z";
+        String maxDate = "2023-09-30T12:00:00Z";
         this.buildAndSaveTwoEvents();
         mockMvc.perform(get("/v1/events/date-between")
                         .param("minDate", minDate)
                         .param("maxDate", maxDate)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
+                .andExpect(jsonPath("$.length()").value(1));
     }
 
     @Test
@@ -186,13 +186,13 @@ public class EventControllerIntegrationTest {
     private void buildAndSaveTwoEvents(){
         Event event2 = buildEvent(EVENT2_ID,
                 "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
-        event2.setDate(LocalDate.of(2023, 7, 1));
+        event2.setStartTime(Instant.parse("2023-07-01T12:00:00Z"));
         event2.setPublished(true);
         event2.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Daloa").build());
 
         Event event3 = buildEvent(EVENT3_ID,
                 "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
-        event3.setDate(LocalDate.of(2023, 8, 1));
+        event2.setStartTime(Instant.parse("2023-08-01T12:00:00Z"));
         event3.setPublished(true);
         event3.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
 

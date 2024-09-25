@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.time.Instant;
 import java.time.LocalDate;
 
 
@@ -39,6 +40,12 @@ public class EventController {
         return ResponseEntity.created(uri).body(eventMapper.toResource(event));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<EventResource> findById(@PathVariable(name = "id") String id){
+        Event event = eventService.findById(id);
+        return ResponseEntity.ok(eventMapper.toResource(event));
+    }
+
     @GetMapping("owned-by")
     public ResponseEntity<List<EventResource>> findEventsByOwner(@RequestParam(name = "owner") String ownerId){
         List<Event> events = eventService.findEventsByOwner(ownerId);
@@ -47,9 +54,9 @@ public class EventController {
 
     @GetMapping("date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
-        LocalDate minD = LocalDate.parse(minDate);
-        LocalDate maxD = LocalDate.parse(maxDate);
-        List<Event> events = eventService.findEventsByDateBetweenAndPublishedIsTrue(minD, maxD);
+        Instant minD = Instant.parse(minDate);
+        Instant maxD = Instant.parse(maxDate);
+        List<Event> events = eventService.findEventsByStartTimeBetweenAndPublishedIsTrue(minD, maxD);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
