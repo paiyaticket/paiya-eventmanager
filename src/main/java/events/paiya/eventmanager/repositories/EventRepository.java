@@ -28,7 +28,7 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title);
 
-    List<Event> findEventsByPhysicalAdresseTownLikeIgnoreCaseAndPublishedIsTrue(String town);
+    List<Event> findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(String town);
 
     List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
 

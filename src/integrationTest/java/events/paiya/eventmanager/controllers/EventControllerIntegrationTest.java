@@ -117,7 +117,7 @@ public class EventControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].physicalAdresse.town").value("Abidjan"));
+                .andExpect(jsonPath("$[0].physicalAddress.town").value("Abidjan"));
     }
 
     @Test
@@ -188,13 +188,13 @@ public class EventControllerIntegrationTest {
                 "Festival du gbégbé", "Festival", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
         event2.setStartTime(Instant.parse("2023-07-01T12:00:00Z"));
         event2.setPublished(true);
-        event2.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Daloa").build());
+        event2.setPhysicalAddress(PhysicalAddress.builder().country("CIV").town("Daloa").build());
 
         Event event3 = buildEvent(EVENT3_ID,
                 "Concert de John Yalley", "Concert", "", "", "Lorem ipsum", "Lorem ipsum dolor", "owner@gmail.com");
         event2.setStartTime(Instant.parse("2023-08-01T12:00:00Z"));
         event3.setPublished(true);
-        event3.setPhysicalAdresse(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
+        event3.setPhysicalAddress(PhysicalAddress.builder().country("CIV").town("Abidjan").build());
 
         eventService.create(event2);
         eventService.create(event3);

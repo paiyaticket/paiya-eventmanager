@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.time.Instant;
-import java.time.LocalDate;
 
 
 
@@ -94,7 +93,7 @@ public class EventService{
 
      
     public List<Event> findEventsByTown(String townName) {
-        return eventRepository.findEventsByPhysicalAdresseTownLikeIgnoreCaseAndPublishedIsTrue(townName);
+        return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
 
 

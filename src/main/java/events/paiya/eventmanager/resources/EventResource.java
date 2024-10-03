@@ -51,8 +51,8 @@ public class EventResource{
     private String timeZone;
     private Integer timeZoneOffset;
     
-    private PhysicalAddress physicalAdresse;
-    private OnlineAddress onlineAdresse;
+    private PhysicalAddress physicalAddress;
+    private OnlineAddress onlineAddress;
     private Langages eventPageLanguage;
     private EventOrganizer eventOrganizer;
     @Builder.Default

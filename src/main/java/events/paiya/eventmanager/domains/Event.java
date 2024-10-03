@@ -39,8 +39,8 @@ public class Event{
     private String timeZone;
     private Integer timeZoneOffset;
     
-    private PhysicalAddress physicalAdresse;
-    private OnlineAddress onlineAdresse;
+    private PhysicalAddress physicalAddress;
+    private OnlineAddress onlineAddress;
     private Langages eventPageLanguage;
     private EventOrganizer eventOrganizer;
     private List<Ticket> tickets;
