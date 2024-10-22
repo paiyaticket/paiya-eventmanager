@@ -6,6 +6,8 @@ import events.paiya.eventmanager.resources.EventResource;
 import events.paiya.eventmanager.services.EventService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.time.Instant;
 import java.time.LocalDate;
 
-
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/v1/events")

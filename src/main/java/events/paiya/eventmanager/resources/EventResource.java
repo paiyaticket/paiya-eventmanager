@@ -1,8 +1,9 @@
 package events.paiya.eventmanager.resources;
 
-import events.paiya.eventmanager.domains.AgendaPhase;
+import events.paiya.eventmanager.domains.TimeSlot;
 import events.paiya.eventmanager.domains.CashAccount;
 import events.paiya.eventmanager.domains.EventOrganizer;
+import events.paiya.eventmanager.domains.ImageCover;
 import events.paiya.eventmanager.domains.Question;
 import events.paiya.eventmanager.domains.OnlineAddress;
 import events.paiya.eventmanager.domains.PhysicalAddress;
@@ -35,7 +36,9 @@ public class EventResource{
     private String eventCategory;
     @Builder.Default
     private List<String> tags = new ArrayList<>();
-    private String imageCover;
+    @Builder.Default
+    private List<ImageCover> imageCovers = new ArrayList<>();
+    private String videoLink;
     @Size(max = 300, message = "Must contain no more than 300 caracters")
     private String summary;
     @Size(max = 3000, message = "Must contain no more than 3000 caracters")
@@ -62,7 +65,7 @@ public class EventResource{
 
     private PublishSettings publishSettings;
 
-    private List<AgendaPhase> agenda;
+    private List<TimeSlot> agenda;
     private List<Question> faq;
 
     // Audit properties

@@ -25,7 +25,8 @@ public class Event{
     private EventType eventType;
     private String eventCategory;
     private List<String> tags;
-    private String imageCover;
+    private List<ImageCover> imageCovers;
+    private String videoLink;
     private String summary;
     private String description;
     private LocalDateTime publicationDate;
@@ -48,7 +49,7 @@ public class Event{
 
     private PublishSettings publishSettings;
 
-    private List<AgendaPhase> agenda;
+    private List<TimeSlot> agenda;
     private List<Question> faq;
     
     // Audit properties

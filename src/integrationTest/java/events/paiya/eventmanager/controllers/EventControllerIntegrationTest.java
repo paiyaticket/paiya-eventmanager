@@ -177,7 +177,7 @@ public class EventControllerIntegrationTest {
                 .eventType(EventType.SINGLE_EVENT)
                 .eventCategory("")
                 .tags(List.of("danse", "ziglibiti", "Abidjan", "côte d'ivoire"))
-                .imageCover("")
+                .imageCovers(List.of())
                 .published(true)
                 .owner("owner@gmail.com")
                 .build();
@@ -203,7 +203,6 @@ public class EventControllerIntegrationTest {
     private Event buildEvent(String id, String... params){
         String title = (params.length > 0) ? params[0] : "";
         String eventCategory = (params.length > 2) ? params[2] : "";
-        String imageCover = (params.length > 3) ? params[3] : "";
         String summary = (params.length > 4) ? params[4] : "";
         String description = (params.length > 5) ? params[5] : "";
         String createdBy = (params.length > 6) ? params[6] : "";
@@ -212,7 +211,7 @@ public class EventControllerIntegrationTest {
                 .title(title)
                 .eventType(EventType.SINGLE_EVENT)
                 .eventCategory(eventCategory)
-                .imageCover(imageCover)
+                .imageCovers(List.of())
                 .summary(summary)
                 .description(description)
                 .owner(createdBy)

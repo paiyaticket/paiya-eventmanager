@@ -1,11 +1,11 @@
 package events.paiya.eventmanager.domains;
 
-import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.Instant;
 
 /*
  * AGENDAPHASE
@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgendaPhase {
+public class TimeSlot {
     private String order;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private Instant startTime;
+    private Instant endTime;
     private String title;
     private String icon;
     private String description;
