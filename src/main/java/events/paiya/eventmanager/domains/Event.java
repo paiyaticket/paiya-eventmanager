@@ -29,7 +29,7 @@ public class Event{
     private String videoLink;
     private String summary;
     private String description;
-    private LocalDateTime publicationDate;
+    private Instant publicationDate;
     private Boolean published;
 
     // private LocalDate date;

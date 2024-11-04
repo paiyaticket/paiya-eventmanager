@@ -29,7 +29,7 @@ public class TicketServiceTest {
     @Test
     @DisplayName("#save() method should create a new ticket")
     void givenTicket_thenCreate(){
-        Ticket ticket = Ticket.builder().name("VIP").build();
+        Ticket ticket = Ticket.builder().label("VIP").build();
         Mockito.when(ticketRepository.save(Mockito.any(Ticket.class))).thenReturn(ticket);
 
         ticketService.save(ticket);

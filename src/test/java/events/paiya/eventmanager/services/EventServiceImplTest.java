@@ -62,7 +62,7 @@ class EventServiceImplTest {
     void givenId_whenExist_thenPublish() {
         String id = UUID.randomUUID().toString();
         Event eventSaved = Event.builder().timeZone(TimeZone.getDefault().getDisplayName())
-                .publicationDate(LocalDateTime.now()).published(true).build();
+                .publicationDate(Instant.now()).published(true).build();
         Mockito.when(eventRepository.findById(Mockito.anyString())).thenReturn(Optional.of(eventSaved));
         Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(eventSaved);
 

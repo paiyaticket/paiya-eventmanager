@@ -16,8 +16,6 @@ import java.time.*;
 public class PublishSettings {
     private EventVisibility eventVisibility;
     @Builder.Default
-    private PublishMoment publishMoment = PublishMoment.NOW;
-    private LocalDate date;
-    private LocalTime time;
-    private String timezone;
+    private PublishMoment whenToPublish = PublishMoment.NOW;
+    private Instant publicationScheduledDate;
 }

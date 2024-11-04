@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -63,9 +62,10 @@ public class EventService{
         Optional<Event> eventOpt = eventRepository.findById(eventId);
 
         if (eventOpt.isPresent()){
-            Event event = eventOpt.get();
+            Event event = eventOpt.get(); 
             event.setPublished(true);
-            event.setPublicationDate(LocalDateTime.now());
+            event.setPublicationDate(Instant.now());
+            event.setPublishSettings(null);
             return eventRepository.save(event);
         } else {
             throw new NoSuchElementException();

@@ -2,7 +2,10 @@ package events.paiya.eventmanager.resources;
 
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+
+import events.paiya.eventmanager.enumeration.TicketType;
 
 
 @Data
@@ -13,15 +16,18 @@ import java.time.LocalDateTime;
 public class TicketResource {
     private String id;
     private String code;
-    private String name;
+    private String label;
     private Integer quantity;
+    private TicketType ticketType;
     private Double price;
-    private Boolean isTransactionFeesSupported;
-    private LocalDateTime startDateOfSales;
-    private LocalDateTime endDateOfSales;
+    private Boolean transactionFeesSupported;
+    private Instant startDateOfSales;
+    private Instant endDateOfSales;
     private Integer minimumTicketQuantityPerOrder;
     private Integer maximumTicketQuantityPerOrder;
-    private String description;
+    private String details;
+    private Boolean refundable;
+    private String refundPolicy;
     private String eventId;
 
     // Audit properties

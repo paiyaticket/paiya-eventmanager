@@ -43,7 +43,7 @@ public class EventResource{
     private String summary;
     @Size(max = 3000, message = "Must contain no more than 3000 caracters")
     private String description;
-    private LocalDateTime publicationDate;
+    private Instant publicationDate;
     @Builder.Default
     private Boolean published = false;
     

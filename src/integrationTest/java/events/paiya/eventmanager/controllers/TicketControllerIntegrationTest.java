@@ -63,11 +63,11 @@ public class TicketControllerIntegrationTest {
 
     Ticket buildTicket(){
         return Ticket.builder()
-                    .name("VIP")
+                    .label("VIP")
                     .code("VIP")
                     .price(10000d)
                     .maximumTicketQuantityPerOrder(3)
-                    .isTransactionFeesSupported(false)
+                    .transactionFeesSupported(false)
                     .quantity(100)
                     .eventId("65ed4726c36bf3454a04cf92")
                     .build();
@@ -75,11 +75,11 @@ public class TicketControllerIntegrationTest {
 
     TicketResource buildTicketREsource(){
         return TicketResource.builder()
-                    .name("VIP")
+                    .label("VIP")
                     .code("VIP")
                     .price(10000d)
                     .maximumTicketQuantityPerOrder(3)
-                    .isTransactionFeesSupported(false)
+                    .transactionFeesSupported(false)
                     .quantity(100)
                     .eventId("65ed4726c36bf3454a04cf92")
                     .build();

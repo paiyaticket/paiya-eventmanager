@@ -1,11 +1,8 @@
 package events.paiya.eventmanager.domains;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import events.paiya.eventmanager.enumeration.TicketType;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -22,21 +19,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Ticket{
     private String id;
     private String code;
-    private String name;
+    private String label;
     private Integer quantity;
+    private TicketType ticketType;
     private Double price;
-    private Boolean isTransactionFeesSupported;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime startDateOfSales;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime endDateOfSales;
+    private Boolean transactionFeesSupported;
+    // @JsonSerialize(using = LocalDateTimeSerializer.class)
+    // @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private Instant startDateOfSales;
+    // @JsonSerialize(using = LocalDateTimeSerializer.class)
+    // @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private Instant endDateOfSales;
     @Builder.Default
     private Integer minimumTicketQuantityPerOrder = 1;
     @Builder.Default
     private Integer maximumTicketQuantityPerOrder = 3;
-    private String description;
+    private String details;
+    private Boolean refundable;
+    private String refundPolicy;
     private String eventId;
 
 
