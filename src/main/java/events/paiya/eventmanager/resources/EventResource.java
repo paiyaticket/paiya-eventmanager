@@ -1,17 +1,23 @@
 package events.paiya.eventmanager.resources;
 
+import events.paiya.eventmanager.domains.TimeSlot;
+import events.paiya.eventmanager.domains.CashAccount;
 import events.paiya.eventmanager.domains.EventOrganizer;
-import events.paiya.eventmanager.domains.OnlineAdresse;
-import events.paiya.eventmanager.domains.PhysicalAdresse;
-import events.paiya.eventmanager.domains.TicketCategorie;
+import events.paiya.eventmanager.domains.ImageCover;
+import events.paiya.eventmanager.domains.Question;
+import events.paiya.eventmanager.domains.OnlineAddress;
+import events.paiya.eventmanager.domains.PhysicalAddress;
+import events.paiya.eventmanager.domains.PublishSettings;
+import events.paiya.eventmanager.domains.Scheduling;
+import events.paiya.eventmanager.domains.Ticket;
+import events.paiya.eventmanager.enumeration.EventStatus;
+import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,36 +31,48 @@ public class EventResource{
     @NotBlank(message = "Title is mandatory")
     @Size(max = 100, message = "Must contain no more than 100 caracters")
     private String title;
-
-    @Size(max = 30, message = "Must contain no more than 50 caracters")
-    private String eventType;
+    @Builder.Default
+    private EventType eventType = EventType.SINGLE_EVENT;
     @Size(max = 30, message = "Must contain no more than 50 caracters")
     private String eventCategory;
     @Builder.Default
     private List<String> tags = new ArrayList<>();
-    private String imageCover;
-    @Size(max = 150, message = "Must contain no more than 100 caracters")
-    private String resume;
-    @Size(max = 3000, message = "Must contain no more than 100 caracters")
-    private String description;
-    private LocalDateTime publicationDate;
     @Builder.Default
-    private Boolean visibility = false;
-    private Langages eventPageLanguage;
-    private LocalDate startingDate;
-    private LocalDate endingDate;
-    private LocalTime startingHour;
-    private LocalTime endingHour;
+    private List<ImageCover> imageCovers = new ArrayList<>();
+    private String videoLink;
+    @Size(max = 300, message = "Must contain no more than 300 caracters")
+    private String summary;
+    @Size(max = 3000, message = "Must contain no more than 3000 caracters")
+    private String description;
+    private Instant publicationDate;
+    @Builder.Default
+    private Boolean published = false;
+    @Builder.Default
+    private EventStatus eventStatus = EventStatus.DRAFT;
+    
+    // private String date;
+    private String startTime;
+    private String endTime;
+    private Scheduling scheduling;
     private String timeZone;
-    private PhysicalAdresse physicalAdresse;
-    private OnlineAdresse onlineAdresse;
+    private Integer timeZoneOffset;
+    
+    private PhysicalAddress physicalAddress;
+    private OnlineAddress onlineAddress;
+    private Langages eventPageLanguage;
     private EventOrganizer eventOrganizer;
     @Builder.Default
-    private List<TicketCategorie> ticketCategories = new ArrayList<>();
-    private String financialAccountId;
+    private List<Ticket> tickets = new ArrayList<>();
+    @Builder.Default
+    private List<CashAccount> cashAccounts = new ArrayList<>();
+
+    private PublishSettings publishSettings;
+
+    private List<TimeSlot> agenda;
+    private List<Question> faq;
 
     // Audit properties
-    private String createdBy;
+    private String owner;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private Integer version;

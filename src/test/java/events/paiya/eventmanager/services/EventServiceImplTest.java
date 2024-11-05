@@ -1,7 +1,6 @@
 package events.paiya.eventmanager.services;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.repositories.EventRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.Assert;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +25,7 @@ class EventServiceImplTest {
     private EventRepository eventRepository;
 
     @InjectMocks
-    private EventServiceImpl eventService;
+    private EventService eventService;
 
     @Test
     void givenEvent_thenCreate() {
@@ -39,7 +37,7 @@ class EventServiceImplTest {
 
     @Test
     void givenOwnerId_thenFindEventsByOwner() {
-        Mockito.when(eventRepository.findEventsByCreatedBy(Mockito.anyString())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findEventsByOwner(Mockito.anyString())).thenReturn(List.of(new Event()));
         List<Event> events = eventService.findEventsByOwner(UUID.randomUUID().toString());
         Assertions.assertFalse(events.isEmpty());
     }
@@ -47,50 +45,30 @@ class EventServiceImplTest {
     @Test
     void findByVisibilityIsTrue() {
         Pageable pageable = PageRequest.of(1, 1);
-        Mockito.when(eventRepository.findByVisibilityIsTrue(pageable)).thenReturn(new PageImpl<>(List.of(new Event()), pageable, 1));
-        Page<Event> eventPage = eventService.findByVisibilityIsTrue(pageable);
+        Mockito.when(eventRepository.findByPublishedIsTrue(pageable)).thenReturn(new PageImpl<>(List.of(new Event()), pageable, 1));
+        Page<Event> eventPage = eventService.findByPublishedIsTrue(pageable);
         Assertions.assertEquals(1, eventPage.getNumberOfElements());
         Assertions.assertEquals(1, eventPage.getContent().size());
     }
 
     @Test
     void findAllByVisibilityIsTrue() {
-        Mockito.when(eventRepository.findAllByVisibilityIsTrue()).thenReturn(List.of(new Event()));
-        List<Event> events = eventService.findAllByVisibilityIsTrue();
+        Mockito.when(eventRepository.findAllByPublishedIsTrue()).thenReturn(List.of(new Event()));
+        List<Event> events = eventService.findAllByPublishedIsTrue();
         Assertions.assertFalse(events.isEmpty());
-    }
-
-    @Test
-    void givenId_whenExist_thenSave() {
-        String eventId = UUID.randomUUID().toString();
-        Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.of(new Event()));
-        Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(new Event());
-        Event event = eventService.update(eventId, new Event());
-        Assertions.assertNotNull(event);
-        Mockito.verify(eventRepository, Mockito.times(1)).save(new Event());
-    }
-
-    @Test
-    void givenId_whenNotExist_thenInsert() {
-        String eventId = UUID.randomUUID().toString();
-        Mockito.when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
-        Mockito.when(eventRepository.insert(Mockito.any(Event.class))).thenReturn(new Event());
-        Event event = eventService.update(eventId, new Event());
-        Assert.notNull(event, () -> "Must not return null");
-        Mockito.verify(eventRepository, Mockito.times(1)).insert(new Event());
     }
 
     @Test
     void givenId_whenExist_thenPublish() {
         String id = UUID.randomUUID().toString();
         Event eventSaved = Event.builder().timeZone(TimeZone.getDefault().getDisplayName())
-                .publicationDate(LocalDateTime.now()).visibility(true).build();
+                .publicationDate(Instant.now()).published(true).build();
         Mockito.when(eventRepository.findById(Mockito.anyString())).thenReturn(Optional.of(eventSaved));
         Mockito.when(eventRepository.save(Mockito.any(Event.class))).thenReturn(eventSaved);
 
         Event event = eventService.publish(id);
 
-        Assertions.assertEquals(true, event.getVisibility());
+        Assertions.assertEquals(true, event.getPublished());
     }
 
     @Test
@@ -100,25 +78,7 @@ class EventServiceImplTest {
 
         Assertions.assertThrowsExactly(NoSuchElementException.class, () -> eventService.publish(id));
     }
-
-    @Test
-    void addTicketCategorie(){
-        String id = UUID.randomUUID().toString();
-        TicketCategorie ticketCategorie = TicketCategorie.builder().build();
-        Mockito.doNothing().when(eventRepository).addTicketCategorie(Mockito.anyString(), Mockito.any(TicketCategorie.class));
-        eventService.addTicketCategorie(id, ticketCategorie);
-        Mockito.verify(eventRepository).addTicketCategorie(id, ticketCategorie);
-    }
-
-    @Test
-    void removeTicketCategorie(){
-        String id = UUID.randomUUID().toString();
-        String categorieCode = id+"cat_"+UUID.randomUUID();
-        Mockito.doNothing().when(eventRepository).removeTicketCategorie(Mockito.anyString(), Mockito.anyString());
-        eventService.removeTicketCategorie(id, categorieCode);
-        Mockito.verify(eventRepository).removeTicketCategorie(id, categorieCode);
-    }
-
+    
     @Test
     void deleteById() {
         String id = UUID.randomUUID().toString();
@@ -129,34 +89,34 @@ class EventServiceImplTest {
 
     @Test
     void findEventsByStartingDateBetweenAndVisibilityIsTrue() {
-        LocalDate startingDate1 = LocalDate.of(2023, 7, 1);
-        LocalDate startingDate2 = LocalDate.of(2023, 7, 7);
-        Mockito.when(eventRepository.findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
+        Instant startingDate1 = Instant.parse("2023-07-01T12:00:00Z");
+        Instant startingDate2 = Instant.parse("2023-07-07T12:00:00Z");
+        Mockito.when(eventRepository.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2)).thenReturn(List.of(new Event()));
 
-        List<Event> events = eventService.findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+        List<Event> events = eventService.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
 
-        Mockito.verify(eventRepository).findEventsByStartingDateBetweenAndVisibilityIsTrue(startingDate1, startingDate2);
+        Mockito.verify(eventRepository).findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 
     @Test
     void findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue() {
-        Mockito.when(eventRepository.findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(Mockito.anyString())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(Mockito.anyString())).thenReturn(List.of(new Event()));
 
-        List<Event> events = eventService.findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue("");
+        List<Event> events = eventService.findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue("");
 
-        Mockito.verify(eventRepository).findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue("");
+        Mockito.verify(eventRepository).findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue("");
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 
     @Test
     void findEventsByTown() {
         String town = "test";
-        Mockito.when(eventRepository.findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue(Mockito.anyString())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(Mockito.anyString())).thenReturn(List.of(new Event()));
 
         List<Event> events = eventService.findEventsByTown(town);
 
-        Mockito.verify(eventRepository).findEventsByPhysicalAdresseTownLikeIgnoreCaseAndVisibilityIsTrue("test");
+        Mockito.verify(eventRepository).findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue("test");
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 }

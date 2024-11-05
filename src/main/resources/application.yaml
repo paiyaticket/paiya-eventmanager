@@ -1,8 +1,15 @@
 server:
   port: 8080
   servlet:
-    context-path: /paiya-eventmanager/api
+    context-path: /api
 
 spring:
   profiles:
-    active: dev
+    active: default, cloud
+
+# OpenApi documentation
+springdoc:
+  api-docs:
+    path: /doc
+  swagger-ui:
+    path: /swagger-ui.html

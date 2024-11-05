@@ -1,14 +1,13 @@
 package events.paiya.eventmanager.controllers;
 
 import events.paiya.eventmanager.domains.Event;
-import events.paiya.eventmanager.domains.TicketCategorie;
 import events.paiya.eventmanager.mappers.EventMapper;
 import events.paiya.eventmanager.resources.EventResource;
-import events.paiya.eventmanager.services.EventServiceImpl;
+import events.paiya.eventmanager.services.EventService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,18 +17,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
+import java.time.Instant;
 
+@Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/v1/events")
-@Slf4j
 public class EventController {
-    private final EventServiceImpl eventService;
+    private final EventService eventService;
     private final EventMapper eventMapper;
 
-    public EventController(EventServiceImpl eventService, EventMapper eventMapper) {
+    public EventController(EventService eventService, EventMapper eventMapper) {
         this.eventService = eventService;
         this.eventMapper = eventMapper;
     }
@@ -42,23 +41,29 @@ public class EventController {
         return ResponseEntity.created(uri).body(eventMapper.toResource(event));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<EventResource> findById(@PathVariable(name = "id") String id){
+        Event event = eventService.findById(id);
+        return ResponseEntity.ok(eventMapper.toResource(event));
+    }
+
     @GetMapping("owned-by")
-    public ResponseEntity<List<EventResource>> findEventsByOwner(@RequestParam(name = "ownerId") String ownerId){
+    public ResponseEntity<List<EventResource>> findEventsByOwner(@RequestParam(name = "owner") String ownerId){
         List<Event> events = eventService.findEventsByOwner(ownerId);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
     @GetMapping("date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
-        LocalDate minD = LocalDate.parse(minDate);
-        LocalDate maxD = LocalDate.parse(maxDate);
-        List<Event> events = eventService.findEventsByStartingDateBetweenAndVisibilityIsTrue(minD, maxD);
+        Instant minD = Instant.parse(minDate);
+        Instant maxD = Instant.parse(maxDate);
+        List<Event> events = eventService.findEventsByStartTimeBetweenAndPublishedIsTrue(minD, maxD);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
     @GetMapping("title-like")
     public ResponseEntity<List<EventResource>> findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(@RequestParam(name = "title") String title){
-        List<Event> events = eventService.findEventsByTitleLikeIgnoreCaseAndVisibilityIsTrue(title);
+        List<Event> events = eventService.findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(title);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
@@ -71,7 +76,7 @@ public class EventController {
     @GetMapping("paginated")
     public ResponseEntity<List<EventResource>> findByVisibilityIsTrue(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size){
         Pageable pageable = PageRequest.of(page, size);
-        Page<Event> eventPage = eventService.findByVisibilityIsTrue(pageable);
+        Page<Event> eventPage = eventService.findByPublishedIsTrue(pageable);
         List<EventResource> eventResourceList = eventMapper.toResourceList(eventPage.stream().toList());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Total-Elements", String.valueOf(eventPage.getTotalElements()));
@@ -81,48 +86,23 @@ public class EventController {
 
     @GetMapping
     public ResponseEntity<List<EventResource>> findAllByVisibilityIsTrue(){
-        return ResponseEntity.ok(eventMapper.toResourceList(eventService.findAllByVisibilityIsTrue()));
+        return ResponseEntity.ok(eventMapper.toResourceList(eventService.findAllByPublishedIsTrue()));
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<EventResource> update(@PathVariable String id, @RequestBody EventResource eventResource){
-        Event event = eventMapper.toEntity(eventResource);
-        event = eventService.update(id, event);
+        Event event = eventService.findById(id);
+        eventMapper.update(eventResource, event);
+        event = eventService.update(event);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
 
-    @PutMapping("publish/{id}")
+    @PatchMapping("publish/{id}")
     public ResponseEntity<EventResource> publish(@PathVariable(name = "id") String eventId){
         Event event = eventService.publish(eventId);
         return ResponseEntity.ok(eventMapper.toResource(event));
     }
-
-    @PutMapping("{id}/ticket-categorie/add")
-    public ResponseEntity<EventResource> addTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                            @RequestBody @NotNull TicketCategorie ticketCategorie) {
-        if (ticketCategorie.getCategorieCode() == null) ticketCategorie.setCategorieCode(eventId + ".CAT." + UUID.randomUUID());
-        eventService.addTicketCategorie(eventId, ticketCategorie);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-
-    @PutMapping("{id}/ticket-categorie/update/{categorieCode}")
-    public ResponseEntity<EventResource> updateTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                               @PathVariable(name = "categorieCode") String categorieCode,
-                                                               @RequestBody @NotNull TicketCategorie ticketCategorie) {
-        eventService.updateTicketCategorieBy(eventId, categorieCode, ticketCategorie);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-
-    @PutMapping("{id}/ticket-categorie/remove/{categorieCode}")
-    public ResponseEntity<EventResource> removeTicketCategorie(@PathVariable(name = "id") String eventId,
-                                                               @PathVariable(name = "categorieCode") String categorieCode) {
-        eventService.removeTicketCategorie(eventId, categorieCode);
-        Event event = eventService.findByIdAndVisibilityIsTrue(eventId);
-        return ResponseEntity.ok(eventMapper.toResource(event));
-    }
-
+    
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable String id){
         this.eventService.deleteById(id);

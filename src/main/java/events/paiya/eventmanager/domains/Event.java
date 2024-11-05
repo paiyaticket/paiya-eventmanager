@@ -1,5 +1,7 @@
 package events.paiya.eventmanager.domains;
 
+import events.paiya.eventmanager.enumeration.EventStatus;
+import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,9 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.List;
 
 @Document
@@ -23,32 +23,44 @@ public class Event{
     @Id
     private String id;
     private String title;
-    private String eventType;
+    private EventType eventType;
     private String eventCategory;
     private List<String> tags;
-    private String imageCover;
-    private String resume;
+    private List<ImageCover> imageCovers;
+    private String videoLink;
+    private String summary;
     private String description;
-    private LocalDateTime publicationDate;
-    private Boolean visibility;
-    private Langages eventPageLanguage;
-    private LocalDate startingDate;
-    private LocalDate endingDate;
-    private LocalTime startingHour;
-    private LocalTime endingHour;
-    private String timeZone;
-    private PhysicalAdresse physicalAdresse;
-    private OnlineAdresse onlineAdresse;
-    private EventOrganizer eventOrganizer;
-    private List<TicketCategorie> ticketCategories;
-    private String financialAccountId;
+    private Instant publicationDate;
+    private Boolean published;
+    private EventStatus eventStatus;
 
+    // private LocalDate date;
+    // private Instant date;
+    private Instant startTime;
+    private Instant endTime;
+    private Scheduling scheduling;
+    private String timeZone;
+    private Integer timeZoneOffset;
+    
+    private PhysicalAddress physicalAddress;
+    private OnlineAddress onlineAddress;
+    private Langages eventPageLanguage;
+    private EventOrganizer eventOrganizer;
+    private List<Ticket> tickets;
+    private List<CashAccount> cashAccounts;
+
+    private PublishSettings publishSettings;
+
+    private List<TimeSlot> agenda;
+    private List<Question> faq;
+    
     // Audit properties
-    private String createdBy;
+    private String owner;
     @CreatedDate
     private LocalDateTime createdDate;
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
     @Version
     private Integer version;
+
 }

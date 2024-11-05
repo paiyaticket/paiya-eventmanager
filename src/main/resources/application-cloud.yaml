@@ -5,10 +5,7 @@ server:
 
 # Database
 spring:
+  # Database
   data:
     mongodb:
-      host: mongodb
-      port: 27017
-      database: paiya_eventmanager
-      username: paiya
-      password: paiya
+      uri: mongodb+srv://tamsir225:L4fVcDT6Ynee4FMx@democluster.pfnfjyb.mongodb.net/paiya_eventmanager?retryWrites=true&w=majority&appName=DemoCluster

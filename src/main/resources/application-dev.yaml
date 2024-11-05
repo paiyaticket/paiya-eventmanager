@@ -1,13 +1,13 @@
 server:
-  port: 8010
+  port: 8011
   servlet:
-    context-path: /paiya-eventmanager/api
+    context-path: /api
 
 # Database
 spring:
   data:
     mongodb:
-      host: mongodb
+      host: localhost
       port: 27017
       database: paiya_eventmanager
       username: paiya
