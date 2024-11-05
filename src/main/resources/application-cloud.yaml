@@ -1,9 +1,3 @@
-server:
-  port: 8010
-  servlet:
-    context-path: /paiya-eventmanager/api
-
-# Database
 spring:
   # Database
   data:
