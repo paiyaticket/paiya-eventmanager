@@ -10,6 +10,7 @@ import events.paiya.eventmanager.domains.PhysicalAddress;
 import events.paiya.eventmanager.domains.PublishSettings;
 import events.paiya.eventmanager.domains.Scheduling;
 import events.paiya.eventmanager.domains.Ticket;
+import events.paiya.eventmanager.enumeration.EventStatus;
 import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
 import jakarta.validation.constraints.NotBlank;
@@ -46,6 +47,8 @@ public class EventResource{
     private Instant publicationDate;
     @Builder.Default
     private Boolean published = false;
+    @Builder.Default
+    private EventStatus eventStatus = EventStatus.DRAFT;
     
     // private String date;
     private String startTime;

@@ -1,5 +1,6 @@
 package events.paiya.eventmanager.domains;
 
+import events.paiya.eventmanager.enumeration.EventStatus;
 import events.paiya.eventmanager.enumeration.EventType;
 import events.paiya.eventmanager.enumeration.Langages;
 import lombok.*;
@@ -31,6 +32,7 @@ public class Event{
     private String description;
     private Instant publicationDate;
     private Boolean published;
+    private EventStatus eventStatus;
 
     // private LocalDate date;
     // private Instant date;

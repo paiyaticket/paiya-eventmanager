@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: default, cloud
 
 # OpenApi documentation
 springdoc:
