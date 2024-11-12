@@ -1,0 +1,24 @@
+server:
+  port: 8011
+  servlet:
+    context-path: /api
+
+
+logging:
+  level:
+    web: debug
+
+spring:
+# Database
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: paiya_eventmanager
+      username: paiya
+      password: paiya
+
+  #Config Server
+  config:
+    import:
+    - optional:configserver:http://configuser:20232024@configserver:8888
