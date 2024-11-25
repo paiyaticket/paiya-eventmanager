@@ -18,6 +18,6 @@ spring:
       host: localhost
       port: 27017
       database: paiya_eventmanager
-      username: paiya
-      password: paiya
+      username: ${PAIYA_DB_USERNAME}
+      password: ${PAIYA_DB_PASSWORD}
 
