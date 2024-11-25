@@ -2,18 +2,18 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_PWD = credentials('DOCKER_HUB_PWD')
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
     }
 
     stages{
-        stage('build'){
+        stage('Build'){
             steps{
-                git branch: 'pipeline-de-dev', url: 'https://github.com/koffiange62/paiya-eventmanager.git'
+                git branch: 'integration-test', url: 'https://github.com/koffiange62/paiya-eventmanager.git'
                 sh './gradlew build -x test'
             }
         }
 
-        stage('unit test'){
+        stage('Unit test'){
             steps{
                 sh './gradlew test'
             }
@@ -26,7 +26,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv() {
-                        sh './gradlew jacocoTestReport sonar'
+                        sh './gradlew jacocoTestReport sonar -Psonarstage=feature -Dsonar.token=${SONAR_TOKEN}'
                     }
                 }
             }
