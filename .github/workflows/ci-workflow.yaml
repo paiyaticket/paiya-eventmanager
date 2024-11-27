@@ -1,0 +1,145 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build-and-test:
+    name: Build and Unit test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
+
+    - name: Build
+      run: ./gradlew build
+  
+  integration-test:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Get the code 
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
+
+      - name: Create and run mongodb docker container
+        id: create-run-mongodb-docker
+        uses: ./.github/actions/run-mongodb-container
+
+#      - name: Install mongosh and create database
+#        uses: ./.github/actions/install-mongosh-and-create-db
+
+#      - name: When mongo fail, get failure report
+#        if: ${{ failure() }}
+#        id: upload-mongo-container-report
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: mongo-container-report-artifact
+#          path: /home/runner/work/_temp
+#          retention-days: 1 
+
+      - name: Make integration tests with Gradle
+        id: make-integration-test
+        run: ./gradlew integrationTest
+        env:
+          PAIYA_DB_USERNAME: paiya
+          PAIYA_DB_PASSWORD: paiya
+
+      - name: When integration tests fail, get failure report
+        if: ${{ failure() }}
+        id: upload-test-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-report-artifact
+          path: ${{ github.workspace }}/build/reports/tests/integrationTest
+          retention-days: 1
+
+  code-static-analysis:
+    name: Sonarqube - Code Static Analysis
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582
+      - name: Sonar static analysis
+        run: ./gradlew test jacocoTestReport sonar -Dsonar.token=${{ secrets.SONARCLOUD_TOKEN }}
+
+  code-security-static-analysis:
+    name: Snyk - Code Security Analysis
+    runs-on: ubuntu-latest
+    needs: code-static-analysis
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/gradle-jdk17@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test
+          args: --severity-threshold=high
+
+
+  dependencies-vulnerabilities-analysis:
+    name: Snyk - Test for dependencies vulnerabilities and license issues
+    runs-on: ubuntu-latest
+    needs: code-static-analysis
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/gradle-jdk17@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+          args: --severity-threshold=high
+
+
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@v4

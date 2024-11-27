@@ -1,0 +1,29 @@
+name: Install mongosh and create database
+description: 'Install mongosh and create database'
+inputs:
+  root_username:
+    description: "Mongodb root username"
+    required: true
+    default: paiya
+  root_password:
+    description: "Mongodb root password"
+    required: true
+    default: paiya
+runs:
+  using: "composite"
+  steps:
+    - name: Install mongosh
+      shell: bash
+      run: |
+        sudo wget -qO- https://www.mongodb.org/static/pgp/server-8.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-8.0.asc
+        echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+        sudo apt update
+        sudo apt-get install -y mongodb-mongosh
+        mongosh --version
+    - name: Create database
+      shell: bash
+      run: |
+        mongosh "mongodb://localhost:27017" --username $INPUT_ROOT_USERNAME --password $INPUT_ROOT_PASSWORD --eval "use paiya_accountmanager"
+      env:
+        INPUT_ROOT_USERNAME: ${{inputs.root_username}}
+        INPUT_ROOT_PASSWORD: ${{inputs.root_password}}
