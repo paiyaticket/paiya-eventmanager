@@ -20,4 +20,5 @@ spring:
       database: paiya_eventmanager
       username: ${PAIYA_DB_USERNAME}
       password: ${PAIYA_DB_PASSWORD}
+      authentication-database: admin
 
