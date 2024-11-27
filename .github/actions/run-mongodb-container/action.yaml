@@ -1,0 +1,29 @@
+name: Run mongodb container
+description: 'Run mongodb container and expose port 27017'
+inputs:
+  root_username:
+    description: "Mongodb root username"
+    required: true
+    default: paiya
+  root_password:
+    description: "Mongodb root password"
+    required: true
+    default: paiya
+  database_name:
+    description: "Mongodb database name"
+    required: true
+    default: paiya_accountmanager
+runs:
+  using: "composite"
+  steps:
+    - name: Run docker container
+      shell: bash
+      run: |
+        docker run --name mongodb -p 27017:27017 \
+        -e MONGO_INITDB_ROOT_USERNAME=$INPUT_ROOT_USERNAME \
+        -e MONGO_INITDB_ROOT_PASSWORD=$INPUT_ROOT_PASSWORD \
+        -e MONGO_INITDB_DATABASE=$INPUT_DATABASE_NAME \
+        -d mongodb/mongodb-community-server:latest
+      env:
+        INPUT_ROOT_USERNAME: ${{inputs.root_username}}
+        INPUT_ROOT_PASSWORD: ${{inputs.root_password}}
