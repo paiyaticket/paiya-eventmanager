@@ -5,15 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class EventOrganizer {
-    private String id;
+@AllArgsConstructor
+public class ImageCover {
+    private String source;
+    @Builder.Default
+    private boolean byDefault = false;
     private String name;
-    private String email;
-    private List<String> phoneNumbers;
+    private String alt;
+
 }

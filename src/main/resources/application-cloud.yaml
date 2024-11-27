@@ -1,0 +1,6 @@
+spring:
+  # Database
+  data:
+    mongodb:
+      uri: mongodb+srv://${paiyaeventmanager_staging_dbusername}:${paiyaeventmanager_staging_dbpassword}@democluster.pfnfjyb.mongodb.net/paiya_eventmanager?retryWrites=true&w=majority&appName=DemoCluster
+      
