@@ -4,8 +4,10 @@ server:
     context-path: /api
 
 spring:
+  application:
+      name: paiya-eventmanager
   profiles:
-    active: default, cloud
+    active: dev
 
 # OpenApi documentation
 springdoc:

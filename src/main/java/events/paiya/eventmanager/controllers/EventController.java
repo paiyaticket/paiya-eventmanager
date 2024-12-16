@@ -87,7 +87,7 @@ public class EventController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<EventResource> update(@PathVariable String id, @RequestBody EventResource eventResource){
+    public ResponseEntity<EventResource> update(@PathVariable(name = "id") String id, @RequestBody EventResource eventResource){
         Event event = eventService.findById(id);
         eventMapper.update(eventResource, event);
         event = eventService.update(event);
@@ -101,7 +101,7 @@ public class EventController {
     }
     
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
+    public ResponseEntity<Void> delete(@PathVariable(name = "id") String id){
         this.eventService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

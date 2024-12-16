@@ -7,9 +7,10 @@ server:
 spring:
   data:
     mongodb:
-      host: localhost
+      host: ${PAIYA_DB_HOST}
       port: 27017
       database: paiya_eventmanager
       username: ${PAIYA_DB_USERNAME}
       password: ${PAIYA_DB_PASSWORD}
+      authentication-database: admin
 
