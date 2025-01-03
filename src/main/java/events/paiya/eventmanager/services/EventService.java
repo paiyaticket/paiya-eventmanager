@@ -102,6 +102,12 @@ public class EventService{
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
 
+    public List<Event> findByPopularityTreshold(float popularityTreshold) {
+        return eventRepository.findByPopularityIsGreaterThan(popularityTreshold);
+    }
 
+    public List<Event> findMostPopularEvents() {
+        return eventRepository.findByPopularityIsGreaterThan(popularityTreshold);
+    }
 
 }

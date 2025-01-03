@@ -19,7 +19,7 @@ import java.time.*;
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
-class EventServiceImplTest {
+class EventServiceTest {
 
     @Mock
     private EventRepository eventRepository;
@@ -117,6 +117,33 @@ class EventServiceImplTest {
         List<Event> events = eventService.findEventsByTown(town);
 
         Mockito.verify(eventRepository).findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue("test");
+        Assert.notEmpty(events, () -> "Events array must not be empty");
+    }
+
+    @Test
+    void deleteAll() {
+        Mockito.doNothing().when(eventRepository).deleteAll();
+        eventService.deleteAll();
+        Mockito.verify(eventRepository).deleteAll();
+    }
+
+    @Test
+    void findEventsByPopularityGreaterThan() {
+        Mockito.when(eventRepository.findByPopularityIsGreaterThan(Mockito.anyFloat())).thenReturn(List.of(new Event()));
+
+        List<Event> events = eventService.findByPopularityTreshold(8.0f);
+
+        Mockito.verify(eventRepository).findByPopularityIsGreaterThan(8.0f);
+        Assert.notEmpty(events, () -> "Events array must not be empty");
+    }
+
+    @Test
+    void findMostPopularEvents() {
+        Mockito.when(eventRepository.findByPopularityIsGreaterThan(Mockito.anyFloat())).thenReturn(List.of(new Event()));
+
+        List<Event> events = eventService.findMostPopularEvents();
+
+        Mockito.verify(eventRepository).findByPopularityIsGreaterThan(Mockito.anyFloat());
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 }
