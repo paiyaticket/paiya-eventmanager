@@ -15,3 +15,7 @@ springdoc:
     path: /doc
   swagger-ui:
     path: /swagger-ui.html
+
+# Custom properties
+paiya:
+  popularityThreshold : 7.5

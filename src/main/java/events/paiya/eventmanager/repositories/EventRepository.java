@@ -36,6 +36,8 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByPublicationDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
 
+    List<Event> findByPopularityIsGreaterThan(float popularity);
+
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")
     void addTicketCategorie(String eventId, Ticket ticketCategorie);
