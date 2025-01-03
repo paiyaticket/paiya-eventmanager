@@ -21,7 +21,7 @@ import java.time.Instant;
 @Slf4j
 public class EventService{
 
-    @Value("${event.popularity.treshold}")
+    @Value("${paiya.event.popularity.treshold}")
     private float popularityTreshold;
 
     private final EventRepository eventRepository;

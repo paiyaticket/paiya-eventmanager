@@ -13,12 +13,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.Assert;
 
 import java.time.*;
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
+@TestPropertySource(locations = "classpath:application-test.yaml")
 class EventServiceTest {
 
     @Mock

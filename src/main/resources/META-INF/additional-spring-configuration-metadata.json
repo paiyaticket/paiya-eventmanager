@@ -1,5 +1,7 @@
-{"properties": [{
-  "name": "paiya.popularity-threshold",
-  "type": "java.lang.String",
-  "description": "A description for 'paiya.popularity-threshold'"
-}]}
+{"properties": [
+  {
+    "name": "paiya.event.popularity.treshold",
+    "type": "java.lang.String",
+    "description": "A description for 'paiya.event.popularity.treshold'"
+  }
+]}
