@@ -3,6 +3,9 @@ package events.paiya.eventmanager.services;
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.repositories.EventRepository;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,9 @@ import java.time.Instant;
 @Component
 @Slf4j
 public class EventService{
+
+    @Value("${paiya.event.popularity.treshold}")
+    private float popularityTreshold;
 
     private final EventRepository eventRepository;
 
@@ -96,6 +102,12 @@ public class EventService{
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
 
+    public List<Event> findByPopularityTreshold(float popularityTreshold) {
+        return eventRepository.findByPopularityIsGreaterThan(popularityTreshold);
+    }
 
+    public List<Event> findMostPopularEvents() {
+        return eventRepository.findByPopularityIsGreaterThan(popularityTreshold);
+    }
 
 }

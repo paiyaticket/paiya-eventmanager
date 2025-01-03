@@ -40,9 +40,9 @@ public class EventResource{
     @Builder.Default
     private List<ImageCover> imageCovers = new ArrayList<>();
     private String videoLink;
-    @Size(max = 1000, message = "Must contain no more than 300 caracters")
+    @Size(max = 1000, message = "Must contain no more than 1000 caracters.")
     private String summary;
-    @Size(max = 10000, message = "Must contain no more than 3000 caracters")
+    @Size(max = 10000, message = "Must contain no more than 10000 caracters.")
     private String description;
     private Instant publicationDate;
     @Builder.Default
@@ -70,6 +70,8 @@ public class EventResource{
 
     private List<TimeSlot> agenda;
     private List<Question> faq;
+
+    private Integer popularity;
 
     // Audit properties
     private String owner;

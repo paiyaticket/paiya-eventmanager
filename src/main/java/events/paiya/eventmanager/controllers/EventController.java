@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.time.Instant;
 
+
 @RestController
 @RequestMapping("/v1/events")
 public class EventController {
@@ -106,6 +107,16 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("most-popular")
+    public ResponseEntity< List<EventResource> > findMostPopularEvents(){
+        List<EventResource> eventResources = eventMapper.toResourceList(eventService.findMostPopularEvents());
+        return ResponseEntity.ok(eventResources);
+    }
 
+    @GetMapping("by-popularity")
+    public ResponseEntity< List<EventResource> > findByPopularityTreshold(@RequestParam(name = "popularityTreshold") float popularityTreshold){
+        List<EventResource> eventResources = eventMapper.toResourceList(eventService.findByPopularityTreshold(popularityTreshold));
+        return ResponseEntity.ok(eventResources);
+    }
 
 }
