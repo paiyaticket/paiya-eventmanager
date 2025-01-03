@@ -103,11 +103,11 @@ public class EventService{
     }
 
     public List<Event> findByPopularityTreshold(float popularityTreshold) {
-        return eventRepository.findByPopularityIsGreaterThan(popularityTreshold);
+        return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
     }
 
     public List<Event> findMostPopularEvents() {
-        return eventRepository.findByPopularityIsGreaterThan(popularityTreshold);
+        return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
     }
 
 }
