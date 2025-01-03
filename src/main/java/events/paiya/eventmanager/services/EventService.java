@@ -100,13 +100,20 @@ public class EventService{
     public List<Event> findEventsByTown(String townName) {
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 806245d (feat : ajouter des fonctionnalités de popularité aux événements)
     
     public List<Event> findMostPopularEvents() {
         return eventRepository.findByPopularityIsGreaterThan(this.popularityTreshold);
     }
     
+<<<<<<< HEAD
     // New method
+=======
+>>>>>>> 806245d (feat : ajouter des fonctionnalités de popularité aux événements)
     public List<Event> findByPopularityTreshold(float popularity) {
         return eventRepository.findByPopularityIsGreaterThan(popularity);
     }
