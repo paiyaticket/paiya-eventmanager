@@ -2,6 +2,8 @@ package events.paiya.eventmanager.repositories;
 
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.Ticket;
+
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -36,7 +38,9 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByPublicationDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
 
-    List<Event> findByPopularityIsGreaterThanAndPublishedIsTrue(float popularity);
+    List<Event> findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(float popularity);
+    
+    Page<Event> findByPopularityIsGreaterThanAndPublishedIsTrue(float popularity, Pageable pageable);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")
