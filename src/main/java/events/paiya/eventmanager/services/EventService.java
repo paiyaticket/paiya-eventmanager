@@ -98,8 +98,8 @@ public class EventService{
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
 
-    public List<Event> findEventsByCountryAndTown(String country, String town) {
-        return eventRepository.findEventsByCountryAndTown(country, town);
+    public Page<Event> findEventsByCountryAndTown(String country, String town, Pageable pageable) {
+        return eventRepository.findEventsByCountryAndTown(country, town, pageable);
     }
 
     public List<Event> findByPopularityTreshold(float popularityTreshold) {

@@ -120,8 +120,18 @@ public class EventController {
     }
 
     @GetMapping("by-location")
-    public ResponseEntity<List<EventResource>> findEventsByCountryAndTown(@RequestParam(name = "country") String country, @RequestParam(name = "town") String town){
-        List<Event> events = eventService.findEventsByCountryAndTown(country, town);
+    public ResponseEntity<List<EventResource>> findEventsByCountryAndTown(
+            @RequestParam(name = "country") String country, @RequestParam(name = "town") String town,
+            @RequestParam(name = "page") int page, @RequestParam(name = "size") int size
+            ){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventPage = eventService.findEventsByCountryAndTown(country, town, pageable);
+        List<Event> events = eventPage.toList();
+        
+        httpHeaders.add("Total-Elements", String.valueOf(eventPage.getTotalElements()));
+        httpHeaders.add("Total-Pages", String.valueOf(eventPage.getTotalPages()));
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
+
 }

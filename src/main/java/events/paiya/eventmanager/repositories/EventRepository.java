@@ -65,7 +65,7 @@ public interface EventRepository extends MongoRepository<Event, String> {
      * @return
      */
     @Query("{'physicalAddress.country' : ?0, 'physicalAddress.town': ?1, 'published' : true}")
-    List<Event> findEventsByCountryAndTown(String country, String town);
+    Page<Event> findEventsByCountryAndTown(String country, String town, Pageable pageable);
     
     /**
      * find event base on the physical address coordinates
