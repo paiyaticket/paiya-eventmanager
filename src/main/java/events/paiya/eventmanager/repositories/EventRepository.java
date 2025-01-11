@@ -4,10 +4,12 @@ import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.Ticket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Distance;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.data.geo.Point;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +39,12 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> findEventsByPublicationDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
 
     List<Event> findByPopularityIsGreaterThanAndPublishedIsTrue(float popularity);
+
+    @Query("{'physicalAddress.country' : ?0, 'physicalAddress.town': ?1, 'published' : true}")
+    List<Event> findEventsByCountryAndTown(String country, String town);
+ 
+    
+    List<Event> findEventsByPhysicalAddressNear(Point point, Distance distance);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")
