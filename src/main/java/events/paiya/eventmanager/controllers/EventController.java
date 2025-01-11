@@ -51,7 +51,7 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
-    @GetMapping("date-between")
+    @GetMapping("by-date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
         Instant minD = Instant.parse(minDate);
         Instant maxD = Instant.parse(maxDate);
@@ -119,4 +119,9 @@ public class EventController {
         return ResponseEntity.ok(eventResources);
     }
 
+    @GetMapping("by-location")
+    public ResponseEntity<List<EventResource>> findEventsByCountryAndTown(@RequestParam(name = "country") String country, @RequestParam(name = "town") String town){
+        List<Event> events = eventService.findEventsByCountryAndTown(country, town);
+        return ResponseEntity.ok(eventMapper.toResourceList(events));
+    }
 }

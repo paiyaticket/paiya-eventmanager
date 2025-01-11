@@ -30,21 +30,58 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title);
 
-    List<Event> findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(String town);
+    
 
+    /**
+     * Returns all events that have a start time less than or equal to the given date
+     * @param date
+     * @return
+     */ 
+    List<Event> findEventsByStartTimeIsLessThanEqualAndPublishedIsTrue(Instant date);
+
+    /**
+     * Returns all events that have a start time between two given date
+     * @param date1
+     * @param date2
+     * @return
+     */
     List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
 
     List<Event> findEventsByEndTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
 
     List<Event> findEventsByPublicationDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
 
-    List<Event> findByPopularityIsGreaterThanAndPublishedIsTrue(float popularity);
+    /**
+     * Returns all events that have a popularity greater than or equal the given value
+     * @param popularity
+     * @return
+     */
+    List<Event> findByPopularityIsGreaterThanEqualAndPublishedIsTrue(float popularity);
 
+    /**
+     * Returns all events that take place in the given country and town
+     * @param country
+     * @param town
+     * @return
+     */
     @Query("{'physicalAddress.country' : ?0, 'physicalAddress.town': ?1, 'published' : true}")
     List<Event> findEventsByCountryAndTown(String country, String town);
- 
     
+    /**
+     * find event base on the physical address coordinates
+     * @Query("{'physicalAddress.coordinates' : { '$near' : { '$geometry' : { 'type' : 'Point', 'coordinates' : [?0, ?1] }, '$maxDistance' : ?2 } } }")
+     * @param point
+     * @param distance
+     * @return
+     */
     List<Event> findEventsByPhysicalAddressNear(Point point, Distance distance);
+
+    /**
+     * Returns all events that take place in the given searched town
+     * @param town
+     * @return
+     */
+    List<Event> findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(String town);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")
