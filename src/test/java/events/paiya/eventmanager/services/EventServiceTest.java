@@ -131,21 +131,34 @@ class EventServiceTest {
 
     @Test
     void findEventsByPopularityGreaterThan() {
-        Mockito.when(eventRepository.findByPopularityIsGreaterThan(Mockito.anyFloat())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findByPopularityIsGreaterThanEqualAndPublishedIsTrue(Mockito.anyFloat())).thenReturn(List.of(new Event()));
 
         List<Event> events = eventService.findByPopularityTreshold(8.0f);
 
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThan(8.0f);
+        Mockito.verify(eventRepository).findByPopularityIsGreaterThanEqualAndPublishedIsTrue(8.0f);
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 
     @Test
     void findMostPopularEvents() {
-        Mockito.when(eventRepository.findByPopularityIsGreaterThan(Mockito.anyFloat())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findByPopularityIsGreaterThanEqualAndPublishedIsTrue(Mockito.anyFloat())).thenReturn(List.of(new Event()));
 
         List<Event> events = eventService.findMostPopularEvents();
 
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThan(Mockito.anyFloat());
+        Mockito.verify(eventRepository).findByPopularityIsGreaterThanEqualAndPublishedIsTrue(Mockito.anyFloat());
         Assert.notEmpty(events, () -> "Events array must not be empty");
+    }
+
+    @Test
+    void findEventsByCountryAndTown() {
+        Pageable pageable = PageRequest.of(1, 1);
+        Mockito.when(eventRepository.findEventsByCountryAndTown(Mockito.anyString(), Mockito.anyString(), Mockito.any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(new Event()), pageable, 1));
+
+        Page<Event> eventPage = eventService.findEventsByCountryAndTown("country", "town", pageable);
+
+        Mockito.verify(eventRepository).findEventsByCountryAndTown("country", "town", pageable);
+        Assertions.assertEquals(1, eventPage.getNumberOfElements());
+        Assertions.assertEquals(1, eventPage.getContent().size());
     }
 }
