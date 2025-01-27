@@ -3,7 +3,7 @@ name: paiya-backend
 services:
   account-manager:
     container_name: account-manager
-    image: paiya/paiya-accountmanager:latest
+    image: koffiange/paiya-accountmanager:latest
     environment:
       - PAIYA_DB_HOST=mongodb
       - PAIYA_DB_USERNAME=paiya
@@ -15,7 +15,7 @@ services:
 
   event-manager:
     container_name: event-manager
-    image: paiya/paiya-eventmanager:latest
+    image: koffiange/paiya-eventmanager:latest
     environment:
       - PAIYA_DB_HOST=mongodb
       - PAIYA_DB_USERNAME=paiya
