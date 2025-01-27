@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.Assert;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.time.*;
 import java.util.*;
 
@@ -130,22 +132,26 @@ class EventServiceTest {
     }
 
     @Test
-    void findEventsByPopularityGreaterThan() {
-        Mockito.when(eventRepository.findByPopularityIsGreaterThan(Mockito.anyFloat())).thenReturn(List.of(new Event()));
+    void findByPopularityTreshold() {
+        Pageable pageable = PageRequest.of(1, 1);
+        Page<Event> resultPage = new PageImpl<>(List.of(new Event()), pageable, 1);
+        Mockito.when(eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(Mockito.anyFloat(), any(Pageable.class)))
+                .thenReturn(resultPage);
 
-        List<Event> events = eventService.findByPopularityTreshold(8.0f);
+        Page<Event> events = eventService.findByPopularityTreshold(8.0f, pageable);
 
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThan(8.0f);
-        Assert.notEmpty(events, () -> "Events array must not be empty");
+        Mockito.verify(eventRepository).findByPopularityIsGreaterThanAndPublishedIsTrue(8.0f,pageable);
+        Assert.notEmpty(events.toList(), () -> "Events list must not be empty");
     }
 
     @Test
     void findMostPopularEvents() {
-        Mockito.when(eventRepository.findByPopularityIsGreaterThan(Mockito.anyFloat())).thenReturn(List.of(new Event()));
+        Mockito.when(eventRepository.findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(Mockito.anyFloat()))
+            .thenReturn(List.of(new Event()));
 
         List<Event> events = eventService.findMostPopularEvents();
 
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThan(Mockito.anyFloat());
+        Mockito.verify(eventRepository).findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(Mockito.anyFloat());
         Assert.notEmpty(events, () -> "Events array must not be empty");
     }
 }

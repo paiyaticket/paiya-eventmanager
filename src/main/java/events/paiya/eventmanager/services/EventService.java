@@ -5,7 +5,7 @@ import events.paiya.eventmanager.repositories.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -102,12 +102,12 @@ public class EventService{
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
 
-    public List<Event> findByPopularityTreshold(float popularityTreshold) {
-        return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
+    public Page<Event> findByPopularityTreshold(float popularityTreshold, Pageable pageable) {
+        return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold, pageable);
     }
 
     public List<Event> findMostPopularEvents() {
-        return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
+        return eventRepository.findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
     }
 
 }
