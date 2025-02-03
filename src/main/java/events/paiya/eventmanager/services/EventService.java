@@ -104,7 +104,7 @@ public class EventService{
   
 
     public Page<Event> findByPopularityTreshold(float popularityTreshold, Pageable pageable) {
-        return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold, pageable);
+        return eventRepository.findByPopularityIsGreaterThanEqualAndPublishedIsTrue(popularityTreshold, pageable);
     }
 
     public List<Event> findMostPopularEvents() {
