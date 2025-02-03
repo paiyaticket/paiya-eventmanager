@@ -88,7 +88,10 @@ public class EventController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<EventResource> update(@PathVariable(name = "id") String id, @RequestBody EventResource eventResource){
+    public ResponseEntity<EventResource> update(
+            @PathVariable(name = "id") String id, 
+            @RequestBody EventResource eventResource
+        ){
         Event event = eventService.findById(id);
         eventMapper.update(eventResource, event);
         event = eventService.update(event);
@@ -107,16 +110,26 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("most-popular")
+    @GetMapping("popular")
     public ResponseEntity< List<EventResource> > findMostPopularEvents(){
         List<EventResource> eventResources = eventMapper.toResourceList(eventService.findMostPopularEvents());
         return ResponseEntity.ok(eventResources);
     }
 
     @GetMapping("by-popularity")
-    public ResponseEntity< List<EventResource> > findByPopularityTreshold(@RequestParam(name = "popularityTreshold") float popularityTreshold){
-        List<EventResource> eventResources = eventMapper.toResourceList(eventService.findByPopularityTreshold(popularityTreshold));
-        return ResponseEntity.ok(eventResources);
+    public ResponseEntity< List<EventResource> > findByPopularityTreshold(
+            @RequestParam float treshold,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+        ){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventsPage = eventService.findByPopularityTreshold(treshold, pageable);
+        List<EventResource> eventResources = eventMapper.toResourceList(eventsPage.stream().toList());
+        
+        return ResponseEntity.ok()
+                .header("Total-Elements", String.valueOf(eventsPage.getTotalElements()))
+                .header("Total-Pages", String.valueOf(eventsPage.getTotalPages()))
+                .body(eventResources);
     }
 
     @GetMapping("by-location")

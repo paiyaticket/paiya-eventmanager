@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.Assert;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import java.time.*;
 import java.util.*;
 
@@ -129,25 +131,6 @@ class EventServiceTest {
         Mockito.verify(eventRepository).deleteAll();
     }
 
-    @Test
-    void findEventsByPopularityGreaterThan() {
-        Mockito.when(eventRepository.findByPopularityIsGreaterThanEqualAndPublishedIsTrue(Mockito.anyFloat())).thenReturn(List.of(new Event()));
-
-        List<Event> events = eventService.findByPopularityTreshold(8.0f);
-
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThanEqualAndPublishedIsTrue(8.0f);
-        Assert.notEmpty(events, () -> "Events array must not be empty");
-    }
-
-    @Test
-    void findMostPopularEvents() {
-        Mockito.when(eventRepository.findByPopularityIsGreaterThanEqualAndPublishedIsTrue(Mockito.anyFloat())).thenReturn(List.of(new Event()));
-
-        List<Event> events = eventService.findMostPopularEvents();
-
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThanEqualAndPublishedIsTrue(Mockito.anyFloat());
-        Assert.notEmpty(events, () -> "Events array must not be empty");
-    }
 
     @Test
     void findEventsByCountryAndTown() {

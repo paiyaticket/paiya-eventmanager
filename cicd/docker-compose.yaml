@@ -1,0 +1,36 @@
+name: paiya-backend
+
+services:
+  account-manager:
+    container_name: account-manager
+    image: koffiange/paiya-accountmanager:latest
+    environment:
+      - PAIYA_DB_HOST=mongodb
+      - PAIYA_DB_USERNAME=paiya
+      - PAIYA_DB_PASSWORD=paiya
+    ports:
+      - 8010:8010
+    depends_on:
+      - mongodb
+
+  event-manager:
+    container_name: event-manager
+    image: koffiange/paiya-eventmanager:latest
+    environment:
+      - PAIYA_DB_HOST=mongodb
+      - PAIYA_DB_USERNAME=paiya
+      - PAIYA_DB_PASSWORD=paiya
+    ports:
+      - 8011:8011
+    depends_on:
+      - mongodb
+      - account-manager
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: paiya
+      MONGO_INITDB_ROOT_PASSWORD: paiya
+    ports:
+      - 27017:27017

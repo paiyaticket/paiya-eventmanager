@@ -2,6 +2,8 @@ package events.paiya.eventmanager.repositories;
 
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.Ticket;
+
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Distance;
@@ -57,7 +59,8 @@ public interface EventRepository extends MongoRepository<Event, String> {
      * @return
      */
     List<Event> findByPopularityIsGreaterThanEqualAndPublishedIsTrue(float popularity);
-
+    Page<Event> findByPopularityIsGreaterThanEqualAndPublishedIsTrue(float popularity, Pageable pageable);
+    List<Event> findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(float popularity);
     /**
      * Returns all events that take place in the given country and town
      * @param country
