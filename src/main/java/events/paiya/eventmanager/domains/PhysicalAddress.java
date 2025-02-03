@@ -20,6 +20,11 @@ public class PhysicalAddress extends Adresse{
     private String postalCode;
     private String country;
     private String state;
-    private String longitude;
-    private String latitude;
+    private Coordinates coordinates;
+
+    @Data
+    private class Coordinates{
+        private String longitude;
+        private String latitude;
+    }
 }

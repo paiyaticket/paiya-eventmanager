@@ -51,7 +51,7 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
-    @GetMapping("date-between")
+    @GetMapping("by-date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
         Instant minD = Instant.parse(minDate);
         Instant maxD = Instant.parse(maxDate);
@@ -130,6 +130,21 @@ public class EventController {
                 .header("Total-Elements", String.valueOf(eventsPage.getTotalElements()))
                 .header("Total-Pages", String.valueOf(eventsPage.getTotalPages()))
                 .body(eventResources);
+    }
+
+    @GetMapping("by-location")
+    public ResponseEntity<List<EventResource>> findEventsByCountryAndTown(
+            @RequestParam(name = "country") String country, @RequestParam(name = "town") String town,
+            @RequestParam(name = "page") int page, @RequestParam(name = "size") int size
+            ){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventPage = eventService.findEventsByCountryAndTown(country, town, pageable);
+        List<Event> events = eventPage.toList();
+        
+        httpHeaders.add("Total-Elements", String.valueOf(eventPage.getTotalElements()));
+        httpHeaders.add("Total-Pages", String.valueOf(eventPage.getTotalPages()));
+        return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
 }

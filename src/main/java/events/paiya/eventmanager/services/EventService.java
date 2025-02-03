@@ -81,7 +81,6 @@ public class EventService{
     public void deleteAll() {
         eventRepository.deleteAll();
     }
-
      
     public void deleteById(String eventId) {
         eventRepository.deleteById(eventId);
@@ -90,17 +89,19 @@ public class EventService{
     public List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant startingDate1, Instant startingDate2) {
         return eventRepository.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
     }
-
-
      
     public List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title) {
         return eventRepository.findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(title);
     }
-
      
     public List<Event> findEventsByTown(String townName) {
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
+
+    public Page<Event> findEventsByCountryAndTown(String country, String town, Pageable pageable) {
+        return eventRepository.findEventsByCountryAndTown(country, town, pageable);
+    }
+  
 
     public Page<Event> findByPopularityTreshold(float popularityTreshold, Pageable pageable) {
         return eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold, pageable);
@@ -108,6 +109,8 @@ public class EventService{
 
     public List<Event> findMostPopularEvents() {
         return eventRepository.findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
+
     }
+
 
 }

@@ -131,27 +131,17 @@ class EventServiceTest {
         Mockito.verify(eventRepository).deleteAll();
     }
 
+
     @Test
-    void findByPopularityTreshold() {
+    void findEventsByCountryAndTown() {
         Pageable pageable = PageRequest.of(1, 1);
-        Page<Event> resultPage = new PageImpl<>(List.of(new Event()), pageable, 1);
-        Mockito.when(eventRepository.findByPopularityIsGreaterThanAndPublishedIsTrue(Mockito.anyFloat(), any(Pageable.class)))
-                .thenReturn(resultPage);
+        Mockito.when(eventRepository.findEventsByCountryAndTown(Mockito.anyString(), Mockito.anyString(), Mockito.any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(new Event()), pageable, 1));
 
-        Page<Event> events = eventService.findByPopularityTreshold(8.0f, pageable);
+        Page<Event> eventPage = eventService.findEventsByCountryAndTown("country", "town", pageable);
 
-        Mockito.verify(eventRepository).findByPopularityIsGreaterThanAndPublishedIsTrue(8.0f,pageable);
-        Assert.notEmpty(events.toList(), () -> "Events list must not be empty");
-    }
-
-    @Test
-    void findMostPopularEvents() {
-        Mockito.when(eventRepository.findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(Mockito.anyFloat()))
-            .thenReturn(List.of(new Event()));
-
-        List<Event> events = eventService.findMostPopularEvents();
-
-        Mockito.verify(eventRepository).findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(Mockito.anyFloat());
-        Assert.notEmpty(events, () -> "Events array must not be empty");
+        Mockito.verify(eventRepository).findEventsByCountryAndTown("country", "town", pageable);
+        Assertions.assertEquals(1, eventPage.getNumberOfElements());
+        Assertions.assertEquals(1, eventPage.getContent().size());
     }
 }
