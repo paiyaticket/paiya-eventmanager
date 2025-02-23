@@ -38,6 +38,10 @@ public class EventService{
         return eventRepository.findByIdAndPublishedIsTrue(id).orElseThrow();
     }
 
+    public List<Event> findMostRecentAddedEvents(int limit) {
+        return eventRepository.findByPublishedIsTrueOrderByPublicationDateDesc(Limit.of(limit));
+    }
+
      
     public Event create(Event event) {
         return eventRepository.save(event);

@@ -110,15 +110,21 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("popular")
+    @GetMapping("most-popular")
     public ResponseEntity< List<EventResource> > findMostPopularEvents(){
         List<EventResource> eventResources = eventMapper.toResourceList(eventService.findMostPopularEvents());
         return ResponseEntity.ok(eventResources);
     }
 
+    @GetMapping("most-recent-added")
+    public ResponseEntity<List<EventResource>> findTheMostRecentAdded(@RequestParam(name = "limit", defaultValue = 20) int limit){
+        List<Event> events = eventService.findMostRecentAddedEvents(limit);
+        return ResponseEntity.ok(eventMapper.toResourceList(events));
+    }
+
     @GetMapping("by-popularity")
     public ResponseEntity< List<EventResource> > findByPopularityTreshold(
-            @RequestParam float treshold,
+            @RequestParam(name = "treshold") float treshold,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
         ){
