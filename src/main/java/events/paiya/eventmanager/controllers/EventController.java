@@ -117,7 +117,7 @@ public class EventController {
     }
 
     @GetMapping("most-recent-added")
-    public ResponseEntity<List<EventResource>> findTheMostRecentAdded(@RequestParam(name = "limit", defaultValue = 20) int limit){
+    public ResponseEntity<List<EventResource>> findTheMostRecentAdded(@RequestParam(name = "limit", defaultValue = "20") int limit){
         List<Event> events = eventService.findMostRecentAddedEvents(limit);
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
