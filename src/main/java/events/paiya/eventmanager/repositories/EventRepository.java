@@ -2,12 +2,16 @@ package events.paiya.eventmanager.repositories;
 
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.domains.Ticket;
+
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Distance;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.data.geo.Point;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +32,64 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title);
 
-    List<Event> findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(String town);
+    /*
+     * Returns top recent events based on the publication date and ordered by the publication date
+     */
+    List<Event> findByPublishedIsTrueOrderByPublicationDateDesc(Limit limit);
 
+    
+
+    /**
+     * Returns all events that have a start time less than or equal to the given date
+     * @param date
+     * @return
+     */ 
+    List<Event> findEventsByStartTimeIsLessThanEqualAndPublishedIsTrue(Instant date);
+
+    /**
+     * Returns all events that have a start time between two given date
+     * @param date1
+     * @param date2
+     * @return
+     */
     List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
 
     List<Event> findEventsByEndTimeBetweenAndPublishedIsTrue(Instant date1, Instant date2);
 
     List<Event> findEventsByPublicationDateBetweenAndPublishedIsTrue(LocalDate date1, LocalDate date2);
+
+    /**
+     * Returns all events that have a popularity greater than or equal the given value
+     * @param popularity
+     * @return
+     */
+    List<Event> findByPopularityIsGreaterThanEqualAndPublishedIsTrue(float popularity);
+    Page<Event> findByPopularityIsGreaterThanEqualAndPublishedIsTrue(float popularity, Pageable pageable);
+    List<Event> findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(float popularity);
+    /**
+     * Returns all events that take place in the given country and town
+     * @param country
+     * @param town
+     * @return
+     */
+    @Query("{'physicalAddress.country' : ?0, 'physicalAddress.town': ?1, 'published' : true}")
+    Page<Event> findEventsByCountryAndTown(String country, String town, Pageable pageable);
+    
+    /**
+     * find event base on the physical address coordinates
+     * @Query("{'physicalAddress.coordinates' : { '$near' : { '$geometry' : { 'type' : 'Point', 'coordinates' : [?0, ?1] }, '$maxDistance' : ?2 } } }")
+     * @param point
+     * @param distance
+     * @return
+     */
+    List<Event> findEventsByPhysicalAddressNear(Point point, Distance distance);
+
+    /**
+     * Returns all events that take place in the given searched town
+     * @param town
+     * @return
+     */
+    List<Event> findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(String town);
 
     @Query("{'_id': ?0}")
     @Update("{'$push' : {'ticketCategories' : ?1} }")

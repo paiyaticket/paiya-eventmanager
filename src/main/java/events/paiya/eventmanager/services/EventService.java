@@ -3,6 +3,9 @@ package events.paiya.eventmanager.services;
 import events.paiya.eventmanager.domains.Event;
 import events.paiya.eventmanager.repositories.EventRepository;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,9 @@ import java.time.Instant;
 @Slf4j
 public class EventService{
 
+    @Value("${paiya.event.popularity.treshold}")
+    private float popularityTreshold;
+
     private final EventRepository eventRepository;
 
     public EventService(EventRepository eventRepository) {
@@ -30,6 +36,10 @@ public class EventService{
 
     public Event findByIdAndPublishedIsTrue(String id) {
         return eventRepository.findByIdAndPublishedIsTrue(id).orElseThrow();
+    }
+
+    public List<Event> findMostRecentAddedEvents(int limit) {
+        return eventRepository.findByPublishedIsTrueOrderByPublicationDateDesc(Limit.of(limit));
     }
 
      
@@ -75,7 +85,6 @@ public class EventService{
     public void deleteAll() {
         eventRepository.deleteAll();
     }
-
      
     public void deleteById(String eventId) {
         eventRepository.deleteById(eventId);
@@ -84,18 +93,28 @@ public class EventService{
     public List<Event> findEventsByStartTimeBetweenAndPublishedIsTrue(Instant startingDate1, Instant startingDate2) {
         return eventRepository.findEventsByStartTimeBetweenAndPublishedIsTrue(startingDate1, startingDate2);
     }
-
-
      
     public List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title) {
         return eventRepository.findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(title);
     }
-
      
     public List<Event> findEventsByTown(String townName) {
         return eventRepository.findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue(townName);
     }
 
+    public Page<Event> findEventsByCountryAndTown(String country, String town, Pageable pageable) {
+        return eventRepository.findEventsByCountryAndTown(country, town, pageable);
+    }
+  
+
+    public Page<Event> findByPopularityTreshold(float popularityTreshold, Pageable pageable) {
+        return eventRepository.findByPopularityIsGreaterThanEqualAndPublishedIsTrue(popularityTreshold, pageable);
+    }
+
+    public List<Event> findMostPopularEvents() {
+        return eventRepository.findTop10ByPopularityIsGreaterThanAndPublishedIsTrue(popularityTreshold);
+
+    }
 
 
 }

@@ -13,13 +13,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.Assert;
+
+import static org.mockito.ArgumentMatchers.any;
 
 import java.time.*;
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
-class EventServiceImplTest {
+@TestPropertySource(locations = "classpath:application-test.yaml")
+class EventServiceTest {
 
     @Mock
     private EventRepository eventRepository;
@@ -118,5 +122,26 @@ class EventServiceImplTest {
 
         Mockito.verify(eventRepository).findEventsByPhysicalAddressTownLikeIgnoreCaseAndPublishedIsTrue("test");
         Assert.notEmpty(events, () -> "Events array must not be empty");
+    }
+
+    @Test
+    void deleteAll() {
+        Mockito.doNothing().when(eventRepository).deleteAll();
+        eventService.deleteAll();
+        Mockito.verify(eventRepository).deleteAll();
+    }
+
+
+    @Test
+    void findEventsByCountryAndTown() {
+        Pageable pageable = PageRequest.of(1, 1);
+        Mockito.when(eventRepository.findEventsByCountryAndTown(Mockito.anyString(), Mockito.anyString(), Mockito.any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(new Event()), pageable, 1));
+
+        Page<Event> eventPage = eventService.findEventsByCountryAndTown("country", "town", pageable);
+
+        Mockito.verify(eventRepository).findEventsByCountryAndTown("country", "town", pageable);
+        Assertions.assertEquals(1, eventPage.getNumberOfElements());
+        Assertions.assertEquals(1, eventPage.getContent().size());
     }
 }

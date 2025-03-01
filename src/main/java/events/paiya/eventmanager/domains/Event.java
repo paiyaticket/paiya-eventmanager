@@ -53,6 +53,8 @@ public class Event{
 
     private List<TimeSlot> agenda;
     private List<Question> faq;
+
+    private Integer popularity;
     
     // Audit properties
     private String owner;

@@ -29,20 +29,20 @@ import java.util.List;
 public class EventResource{
     private String id;
     @NotBlank(message = "Title is mandatory")
-    @Size(max = 100, message = "Must contain no more than 100 caracters")
+    @Size(max = 200, message = "Must contain no more than 100 caracters")
     private String title;
     @Builder.Default
     private EventType eventType = EventType.SINGLE_EVENT;
-    @Size(max = 30, message = "Must contain no more than 50 caracters")
+    @Size(max = 100, message = "Must contain no more than 100 caracters")
     private String eventCategory;
     @Builder.Default
     private List<String> tags = new ArrayList<>();
     @Builder.Default
     private List<ImageCover> imageCovers = new ArrayList<>();
     private String videoLink;
-    @Size(max = 300, message = "Must contain no more than 300 caracters")
+    @Size(max = 1000, message = "Must contain no more than 1000 caracters.")
     private String summary;
-    @Size(max = 3000, message = "Must contain no more than 3000 caracters")
+    @Size(max = 10000, message = "Must contain no more than 10000 caracters.")
     private String description;
     private Instant publicationDate;
     @Builder.Default
@@ -70,6 +70,8 @@ public class EventResource{
 
     private List<TimeSlot> agenda;
     private List<Question> faq;
+
+    private Integer popularity;
 
     // Audit properties
     private String owner;

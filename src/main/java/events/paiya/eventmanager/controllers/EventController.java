@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.time.Instant;
 
+
 @RestController
 @RequestMapping("/v1/events")
 public class EventController {
@@ -50,7 +51,7 @@ public class EventController {
         return ResponseEntity.ok(eventMapper.toResourceList(events));
     }
 
-    @GetMapping("date-between")
+    @GetMapping("by-date-between")
     public ResponseEntity<List<EventResource>> findEventsByStartingDateBetweenAndVisibilityIsTrue(@RequestParam(name = "minDate") String minDate, @RequestParam(name = "maxDate") String maxDate){
         Instant minD = Instant.parse(minDate);
         Instant maxD = Instant.parse(maxDate);
@@ -87,7 +88,10 @@ public class EventController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<EventResource> update(@PathVariable String id, @RequestBody EventResource eventResource){
+    public ResponseEntity<EventResource> update(
+            @PathVariable(name = "id") String id, 
+            @RequestBody EventResource eventResource
+        ){
         Event event = eventService.findById(id);
         eventMapper.update(eventResource, event);
         event = eventService.update(event);
@@ -101,11 +105,52 @@ public class EventController {
     }
     
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id){
+    public ResponseEntity<Void> delete(@PathVariable(name = "id") String id){
         this.eventService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("most-popular")
+    public ResponseEntity< List<EventResource> > findMostPopularEvents(){
+        List<EventResource> eventResources = eventMapper.toResourceList(eventService.findMostPopularEvents());
+        return ResponseEntity.ok(eventResources);
+    }
 
+    @GetMapping("most-recent-added")
+    public ResponseEntity<List<EventResource>> findTheMostRecentAdded(@RequestParam(name = "limit", defaultValue = "20") int limit){
+        List<Event> events = eventService.findMostRecentAddedEvents(limit);
+        return ResponseEntity.ok(eventMapper.toResourceList(events));
+    }
+
+    @GetMapping("by-popularity")
+    public ResponseEntity< List<EventResource> > findByPopularityTreshold(
+            @RequestParam(name = "treshold") float treshold,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+        ){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventsPage = eventService.findByPopularityTreshold(treshold, pageable);
+        List<EventResource> eventResources = eventMapper.toResourceList(eventsPage.stream().toList());
+        
+        return ResponseEntity.ok()
+                .header("Total-Elements", String.valueOf(eventsPage.getTotalElements()))
+                .header("Total-Pages", String.valueOf(eventsPage.getTotalPages()))
+                .body(eventResources);
+    }
+
+    @GetMapping("by-location")
+    public ResponseEntity<List<EventResource>> findEventsByCountryAndTown(
+            @RequestParam(name = "country") String country, @RequestParam(name = "town") String town,
+            @RequestParam(name = "page") int page, @RequestParam(name = "size") int size
+            ){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Event> eventPage = eventService.findEventsByCountryAndTown(country, town, pageable);
+        List<Event> events = eventPage.toList();
+        
+        httpHeaders.add("Total-Elements", String.valueOf(eventPage.getTotalElements()));
+        httpHeaders.add("Total-Pages", String.valueOf(eventPage.getTotalPages()));
+        return ResponseEntity.ok(eventMapper.toResourceList(events));
+    }
 
 }

@@ -21,5 +21,5 @@ public class TimeSlot {
     private String title;
     private String icon;
     private String description;
-    private List<Speaker> spekers;
+    private List<Speaker> speakers;
 }
