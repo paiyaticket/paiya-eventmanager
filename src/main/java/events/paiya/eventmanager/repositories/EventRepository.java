@@ -32,6 +32,11 @@ public interface EventRepository extends MongoRepository<Event, String> {
 
     List<Event> findEventsByTitleLikeIgnoreCaseAndPublishedIsTrue(String title);
 
+    /*
+     * Returns top recent events based on the publication date and ordered by the publication date
+     */
+    List<Event> findByPublishedIsTrueOrderByPublicationDateDesc(Limit limit);
+
     
 
     /**
